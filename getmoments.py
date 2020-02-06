@@ -4,6 +4,7 @@
 #Dependencies: look at files loaded by np.loadtxt(). Should be in correct format
 
 import numpy as np
+#import os
 
 energy=np.loadtxt("energies.raw") #loads state energies in a.u
 E1=energy[1]-energy[0] #first excitation energy
