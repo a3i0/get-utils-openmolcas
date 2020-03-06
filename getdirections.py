@@ -1,4 +1,6 @@
 #v1.0
+#Input = geom file, grid size(factor by which to divide 360). 
+#Output = directions.inp, a list of directions along xy and xz concatenated. Has number of directions on top of file. 
 #syntax: python3 getdirections.py <input_geom> <grid size>
 
 import numpy as np
@@ -39,4 +41,4 @@ directions_xz=com+directions_xz
 alldir=np.concatenate((directions_xy,directions_xz),axis=0) #concatenates matrices along the column direction
 
 #saving in appropriate format for inputting into molcas. header adds lines before data and comments defaults to '#')
-np.savetxt('directions.dat', alldir, header=str(len(directions_xy)+len(directions_xz)), comments='')
+np.savetxt('directions.inp', alldir, header=str(len(directions_xy)+len(directions_xz)), comments='')
