@@ -1,7 +1,7 @@
-#v2.0
+#v1.2.1
 #Input: .log file, number of roots
 #Output: readable files (with dipole, angular momentum and velocity componenets) to stdout
-#Syntax: bash getmoments.sh <.log> <nroots>
+#Syntax: bash truncmoments.sh <.log> <nroots>
 
 
 #creating readable data file with dipole, angular momentum and velocity (momentum) components
@@ -112,7 +112,7 @@ cat tmp.dat | cat >> moments.dat
 #removing tmp files
 rm tmp.dat tmp_x.dat
 
-#printing created file to stdout
+printing created file to stdout
 cat moments.dat
 
 

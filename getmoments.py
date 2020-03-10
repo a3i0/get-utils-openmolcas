@@ -1,18 +1,39 @@
-#v1.3.1
-#Input: RASSI State energies, Dipole, velocity and angular momentum components, full operator oscillator and rotatory strengths
+#v2.0
+#Input: RASSI State energies, Dipole, velocity and angular momentum components, full operator oscillator and rotatory strengths, number of roots, intial and final roots
 #Output: Rot strength in mixed, veocity and for full operator, dipole strength in length, osc strength in velociy and full operator
+#Syntax: python3 getmoments.sh <nroots> <initial root> <final root>
 #Dependencies: look at files loaded by np.loadtxt(). Should be in correct format
 
 import numpy as np
-#import os
+import sys
+
+#setting values of number of roots, initial root and final root
+#defaults
+nroots=1
+ri=0
+rf=1
+
+#slightly failproof assignments
+if(sys.argv[1] != 0):
+    nroots=int(sys.argv[1])
+
+if(sys.argv[2]!=0 and sys.argv[3]!=0): 
+    ri=int(sys.argv[2])
+    rf=int(sys.argv[3])
+
+
 
 energy=np.loadtxt("energies.raw") #loads state energies in a.u
-E1=energy[1]-energy[0] #first excitation energy
+if (ri == rf): #warning for same-root properties
+    print('Same root! Transition energy-dependent properties will not be calculated')
+
+
+E1=energy[rf-1]-energy[ri-1] #excitation energy
 
 data=np.loadtxt("moments.raw")
-u=[data[0,2],data[3,2],data[6,2]]
-l=[data[9,2],data[12,2],data[15,2]]
-v=[data[18,2],data[21,2],data[24,2]]
+u=[data[(ri-1),(rf-1)],data[(ri-1+nroots),(rf-1)],data[(ri-1+(2*nroots)),(rf-1)]]
+l=[data[((3*nroots)-1+ri),(rf-1)],data[((4*nroots)-1+ri),(rf-1)],data[((5*nroots)-1+ri),(rf-1)]]
+v=[data[((6*nroots)-1+ri),(rf-1)],data[((7*nroots)-1+ri),(rf-1)],data[((8*nroots)-1+ri),(rf-1)]]
 
 u=np.array(u)
 l=np.array(l)
@@ -23,6 +44,9 @@ m=-0.5*l
 rot_str=np.dot(u,m)
 rot_str_cgs=rot_str*471.44e-40
 #rotatory strength in velocity
+if (ri ==rf):
+    rot_str_vel=0
+
 rot_str_vel=-1*np.dot(v,m)/E1
 rot_str_vel_cgs=rot_str_vel*471.44e-40
 #dipole strengths in length and velocity 
@@ -30,19 +54,37 @@ dip_str_len=abs(np.dot(u,u))
 dip_str_len_cgs=dip_str_len*64591e-40
 dip_str_vel=abs(np.dot(v,v))
 #oscillatory strength in velocity
+if (ri == rf):
+    osc_str_vel=0
+
 osc_str_vel=2.0*dip_str_vel/(3.0*E1)
 
 #full operator moments
-fullopdata=np.loadtxt("momentsfullop.raw") 
-rot_str_fullop=fullopdata[3]*1.967e-3 #converting from reduced rot str to atomic units
+fullopdata=np.loadtxt("momentsfullop.raw")
+
+#default transition matrix values are zero
+fulloprot = np.zeros(shape=(nroots,nroots))
+fulloposc = np.zeros(shape=(nroots,nroots))
+
+#checking the indices of transition and filling the transition matrix correspondingly
+for i in range(len(fullopdata)):
+    init=int(fullopdata[i,0])
+    final=int(fullopdata[i,1])
+    fulloprot[init-1,final-1]=fullopdata[i,3]
+    fulloprot[final-1,init-1]=fulloprot[init-1,final-1] #symmetrising
+    fulloposc[init-1,final-1]=fullopdata[i,2]
+    fulloposc[final-1,init-1]=fulloposc[init-1,final-1] #symmetrising
+
+
+rot_str_fullop=fulloprot[ri-1,rf-1]*1.967e-3 #converting from reduced rot str to atomic units
 rot_str_fullop_cgs=rot_str_fullop*471.44e-40 #converting from a.u to cgs
-osc_str_fullop=fullopdata[2] #unitless
+osc_str_fullop=fulloposc[ri-1,rf-1] #unitless
 
 #osdata=np.loadtxt("ostr_raw.dat")
 #osc_strength_len=osdata[0,2]
 #osc_strength_vel=osdata[1,2]
 
-file=open("moments.dat","a")
+file=open("tmoments.dat","w")
 file.writelines(["Rotatory strengths (mixed): ", str(rot_str), "(a.u) ", str(rot_str_cgs), "(cgs) ", "\n"])
 file.writelines(["Rotatory strengths (velocity): ", str(rot_str_vel), "(a.u) ", str(rot_str_vel_cgs), "(cgs) ", "\n"])
 file.writelines(["Rotatory strengths (full operator):", str(rot_str_fullop), "(a.u) " , str(rot_str_fullop_cgs), "(cgs)", "\n"])
