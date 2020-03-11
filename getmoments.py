@@ -1,6 +1,6 @@
 #v2.0
 #Input: RASSI State energies, Dipole, velocity and angular momentum components, full operator oscillator and rotatory strengths, number of roots, intial and final roots
-#Output: Rot strength in mixed, veocity and for full operator, dipole strength in length, osc strength in velociy and full operator
+#Output: Rot strength in mixed, veocity and for full operator, dipole strength in length, osc strength in velociy and full operator. Excitaion energy. All for specified roots
 #Syntax: python3 getmoments.sh <nroots> <initial root> <final root>
 #Dependencies: look at files loaded by np.loadtxt(). Should be in correct format
 
@@ -29,6 +29,7 @@ if (ri == rf): #warning for same-root properties
 
 
 E1=energy[rf-1]-energy[ri-1] #excitation energy
+E1_ev=E1*27.211 #in eV
 
 data=np.loadtxt("moments.raw")
 u=[data[(ri-1),(rf-1)],data[(ri-1+nroots),(rf-1)],data[(ri-1+(2*nroots)),(rf-1)]]
@@ -85,13 +86,13 @@ osc_str_fullop=fulloposc[ri-1,rf-1] #unitless
 #osc_strength_vel=osdata[1,2]
 
 file=open("tmoments.dat","w")
-file.writelines(["Rotatory strengths (mixed): ", str(rot_str), "(a.u) ", str(rot_str_cgs), "(cgs) ", "\n"])
-file.writelines(["Rotatory strengths (velocity): ", str(rot_str_vel), "(a.u) ", str(rot_str_vel_cgs), "(cgs) ", "\n"])
-file.writelines(["Rotatory strengths (full operator):", str(rot_str_fullop), "(a.u) " , str(rot_str_fullop_cgs), "(cgs)", "\n"])
-file.writelines(["Dipole strengths (length): " , str(dip_str_len), "(a.u) ",  str(dip_str_len_cgs), "(cgs)", "\n"])
+file.writelines(["Rotatory strengths (mixed): ", str(rot_str), " (a.u) ", str(rot_str_cgs), " (cgs) ", "\n"])
+file.writelines(["Rotatory strengths (velocity): ", str(rot_str_vel), " (a.u) ", str(rot_str_vel_cgs), " (cgs) ", "\n"])
+file.writelines(["Rotatory strengths (full operator):", str(rot_str_fullop), " (a.u) " , str(rot_str_fullop_cgs), " (cgs)", "\n"])
+file.writelines(["Dipole strengths (length): " , str(dip_str_len), " (a.u) ",  str(dip_str_len_cgs), " (cgs)", "\n"])
 file.writelines(["Oscillator strengths (velocity): " , str(osc_str_vel), "\n"])
 file.writelines(["Oscillator strengths (full operator):", str(osc_str_fullop), "\n"])
-
+file.writelines(["Excitation Energy: ", str(E1), " (a.u) ", str(E1_ev), " (eV) ", "\n"])
 #file.writelines(["Osccilator strengths (velocity): " , str(osc_strength_vel), "\n"])
 
 file.close()
