@@ -1,4 +1,4 @@
-#v2.0
+#v2.1
 #Input: .log file, number of roots
 #Output: readable files (with dipole, angular momentum and velocity componenets) to stdout
 #Syntax: bash getmoments.sh <.log> <nroots>
