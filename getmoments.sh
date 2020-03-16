@@ -1,4 +1,4 @@
-#v2.1
+#v2.2
 #Input: .log file, number of roots
 #Output: readable files (with dipole, angular momentum and velocity componenets) to stdout
 #Syntax: bash getmoments.sh <.log> <nroots>
@@ -6,7 +6,7 @@
 
 #creating readable data file with dipole, angular momentum and velocity (momentum) components
 init=$((${2}+5)) #variable for value of after-context for first block
-nblocks=$(($2/4 + 1)) #molcas prints at most 4 columns of moments in one line
+nblocks=$((($2-1)/4 + 1)) #molcas prints at most 4 columns of moments in one line
 
 #--------------------------------------------------------------------------------------------------
 grep --after-context=$init "PROPERTY: MLTPL  1   COMPONENT:   1" $1 | sed '2,3 d' | cat > tmp.dat
