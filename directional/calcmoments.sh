@@ -7,7 +7,7 @@ SCRIPTS_DIR=$(dirname $0) #variable with the directory of all the script files
 
 
 #array with all the lines between which data is located
-dataholders=($(bash getfullopmoments.sh $1 $2 | grep -n '\---------------------------------------------------------------'| cut -d ":" -f 1))
+dataholders=($(bash $SCRIPTS_DIR/getfullopmoments.sh $1 $2 | grep -n '\---------------------------------------------------------------'| cut -d ":" -f 1))
 len_dataholders=${#dataholders[@]} #length of this array
 
 rm -f momentsfullop* #removing file to prevent append errors in python
