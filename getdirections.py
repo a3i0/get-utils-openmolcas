@@ -32,7 +32,7 @@ for i in range(len(directions_xz)):
     if (i==0):
         directions_xz[i]=np.array([1.0,0.0,0.0])
         continue
-    directions_xz[i]=np.matmul(givens_xy,directions_xz[i-1])
+    directions_xz[i]=np.matmul(givens_xz,directions_xz[i-1])
 
 #shifting by adding com
 directions_xy=com+directions_xy
