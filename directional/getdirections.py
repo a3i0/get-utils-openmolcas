@@ -19,26 +19,31 @@ givens_xz=np.array(([np.cos(2*np.pi/angle_grid_size) , 0, -np.sin(2*np.pi/angle_
 #Initialising direction matrices as natoms x 3 matrices
 directions_xy=np.zeros(shape=((angle_grid_size),3))
 directions_xz=np.zeros(shape=((angle_grid_size),3))
+directions=np.zeros(shape=((angle_grid_size*angle_grid_size),3))
 
 #updating entries
-for i in range(len(directions_xy)):
+for i in range(angle_grid_size):
     if (i==0):
         directions_xy[i]=np.array([1.0,0.0,0.0])
         continue
     directions_xy[i]=np.matmul(givens_xy,directions_xy[i-1])
 
-
-for i in range(len(directions_xz)):
-    if (i==0):
-        directions_xz[i]=np.array([1.0,0.0,0.0])
-        continue
-    directions_xz[i]=np.matmul(givens_xz,directions_xz[i-1])
-
+index=0
+for i in range(angle_grid_size):
+    for j in range(angle_grid_size):
+        index=index+1
+        if(j==0):
+           directions[index-1]=directions_xy[i]
+           continue
+        else:
+            directions[index-1]=np.matmul(givens_xz,directions[index-2])
+                
 #shifting by adding com
-directions_xy=com+directions_xy
-directions_xz=com+directions_xz
+#directions_xy=com+directions_xy
+#directions_xz=com+directions_xz
+#directions=directions+com
 
-alldir=np.concatenate((directions_xy,directions_xz),axis=0) #concatenates matrices along the column direction
+#alldir=np.concatenate((directions_xy,directions_xz),axis=0) #concatenates matrices along the column direction
 
 #saving in appropriate format for inputting into molcas. header adds lines before data and comments defaults to '#')
-np.savetxt('directions.inp', alldir, header=str(len(directions_xy)+len(directions_xz)), comments='')
+np.savetxt('directions.inp', directions, header=str(len(directions_xy)*len(directions_xz)), comments='')
