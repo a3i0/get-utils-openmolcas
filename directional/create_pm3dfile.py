@@ -12,7 +12,7 @@ data=np.loadtxt(sys.argv[1])
 r=np.sqrt(np.power(data[:,0],2) + np.power(data[:,1],2) + np.power(data[:,2],2))
 phi=np.arcsin(np.divide(data[:,2],r)) #range of arcsin = [-pi/2,pi/2]
 theta=np.arctan2(data[:,1],data[:,0]) #range of arctan2 = [-pi,pi]
-value=np.absolute(data[:,3])
+value=data[:,3]
 
 #converting to degrees
 phi=phi*(180.0/np.pi)
@@ -46,7 +46,7 @@ value[j:i]=np.take(value[j:i],phi_sorted_indices)
 value_sign=np.sign(value)
 
 #Transposing arrays into coumns vectors and concatenating along columns
-output=np.concatenate((theta[:,np.newaxis],phi[:,np.newaxis],value[:,np.newaxis], value[:,np.newaxis] , value_sign[:,np.newaxis]), axis=1)
+output=np.concatenate((theta[:,np.newaxis],phi[:,np.newaxis],np.absolute(value[:,np.newaxis]), value[:,np.newaxis] , value_sign[:,np.newaxis]), axis=1)
 
 #Writing to file in correct format
 if os.path.exists("directional.gnuplot"):
