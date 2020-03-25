@@ -1,6 +1,6 @@
-#v1.0
+#v1.1
 #Input: input file with format (x y z value) where x,y,z lie on a unit sphere
-#Output: file with angles (theta phi value value signof(value)) with correct format for use in gnuplot with 4-column pm3d. Note that angles are accoirding to 'geographical' spherical polar coordinates and angle in degrees
+#Output: file with angles (theta phi abs(value) value signof(value)) with correct format for use in gnuplot with 4-column pm3d. Note that angles are accoirding to 'geographical' spherical polar coordinates and angle in degrees
 #syntax: python create_pm3dfile.py <input file>
 
 import numpy as np
@@ -12,7 +12,7 @@ data=np.loadtxt(sys.argv[1])
 r=np.sqrt(np.power(data[:,0],2) + np.power(data[:,1],2) + np.power(data[:,2],2))
 phi=np.arcsin(np.divide(data[:,2],r)) #range of arcsin = [-pi/2,pi/2]
 theta=np.arctan2(data[:,1],data[:,0]) #range of arctan2 = [-pi,pi]
-value=data[:,3]
+value=np.absolute(data[:,3])
 
 #converting to degrees
 phi=phi*(180.0/np.pi)
