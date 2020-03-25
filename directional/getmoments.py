@@ -6,6 +6,7 @@
 
 import numpy as np
 import sys
+import os
 
 #setting values of number of roots, initial root and final root
 #defaults
@@ -30,6 +31,9 @@ directions=np.loadtxt("directions.raw")
 if(ndir != len(directions)):
     print('Number of directions not equal!')
 
+#File check
+if os.path.exists("dir-fullmoments.raw"):
+        os.remove("dir-fullmoments.raw")
 
 #full operator moments
 i=1
@@ -45,6 +49,8 @@ while (i<=ndir):
     fulloprot = np.zeros(shape=(nroots,nroots))
     fulloposc = np.zeros(shape=(nroots,nroots))
     
+
+
     #checking the indices of transition and filling the transition matrix correspondingly
     for j in range(len(fullopdata)):
         init=int(fullopdata[j,0])
@@ -58,10 +64,10 @@ while (i<=ndir):
     rot_str_fullop_cgs=rot_str_fullop*471.44e-40 #converting from a.u to cgs
     osc_str_fullop=fulloposc[ri-1,rf-1] #unitless
     
-    file=open("tmoments.dat","a")
+    file=open("dir-fullmoments.raw","a")
     #file.writelines(["Rotatory strengths (mixed): ", str(rot_str), " (a.u) ", str(rot_str_cgs), " (cgs) ", "\n"])
     #file.writelines(["Rotatory strengths (velocity): ", str(rot_str_vel), " (a.u) ", str(rot_str_vel_cgs), " (cgs) ", "\n"])
-    file.writelines([str(directions[i-1,0]), " ", str(directions[i-1,1]), " ", str(directions[i-1,2]), " ",  str(rot_str_fullop_cgs), " (cgs) ", str(osc_str_fullop), "\n"])
+    file.writelines([str(directions[i-1,0]), " ", str(directions[i-1,1]), " ", str(directions[i-1,2]), " ",  str(rot_str_fullop_cgs), " ", str(osc_str_fullop), "\n"])
     #file.writelines(["Dipole strengths (length): " , str(dip_str_len), " (a.u) ",  str(dip_str_len_cgs), " (cgs)", "\n"])
     #file.writelines(["Oscillator strengths (velocity): " , str(osc_str_vel), "\n"])
     #file.writelines(["Excitation Energy: ", str(E1), " (a.u) ", str(E1_ev), " (eV) ", "\n"])
