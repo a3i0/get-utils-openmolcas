@@ -19,7 +19,7 @@ phi=phi*(180.0/np.pi)
 theta=theta*(180.0/np.pi)
 
 
-#Sorting
+#Sorting with treshold
 theta_sorted_indices=np.argsort(theta)
 theta=np.sort(theta)
 phi=np.take(phi,theta_sorted_indices)
@@ -28,7 +28,7 @@ value=np.take(value,theta_sorted_indices)
 i=0
 j=0
 while(i<(len(theta)-1)):
-    if(theta[i+1]==theta[i]):
+    if(np.abs(theta[i+1]-theta[i])<1E-5):
         i=i+1
         continue
     else:
@@ -52,13 +52,14 @@ output=np.concatenate((theta[:,np.newaxis],phi[:,np.newaxis],np.absolute(value[:
 if os.path.exists("directional.gnuplot"):
   os.remove("directional.gnuplot")
 
+#np.savetxt("directional_gnuplot",output)
 file=open("directional.gnuplot","ab")
 
 i=0
 while(i<(len(theta)-1)):
     np.savetxt(file,output[i,:] ,fmt="%1.8E",delimiter=' ', newline=' ')
     np.savetxt(file,['\n'],fmt='%s',newline='')
-    if(theta[i+1]==theta[i]):
+    if(np.abs(theta[i+1]-theta[i])<1E-5):
         i = i+1
         continue
     else:
