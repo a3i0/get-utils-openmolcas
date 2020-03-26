@@ -32,21 +32,23 @@ while(i<(len(theta)-1)):
         i=i+1
         continue
     else:
-        phi_sorted_indices=np.argsort(phi[j:i])
-        phi[j:i]=np.sort(phi[j:i])
-        value[j:i]=np.take(value[j:i],phi_sorted_indices)
+        phi_sorted_indices=np.argsort(phi[j:i+1])
+        phi[j:i+1]=np.sort(phi[j:i+1])
+        value[j:i+1]=np.take(value[j:i+1],phi_sorted_indices)
         j=i+1
         i=i+1
 
 #last remaining block
-phi_sorted_indices=np.argsort(phi[j:i])
-phi[j:i]=np.sort(phi[j:i])
-value[j:i]=np.take(value[j:i],phi_sorted_indices)
+phi_sorted_indices=np.argsort(phi[j:i+1])
+phi[j:i+1]=np.sort(phi[j:i+1])
+value[j:i+1]=np.take(value[j:i+1],phi_sorted_indices)
 
 value_sign=np.sign(value)
 
 #Transposing arrays into coumns vectors and concatenating along columns
 output=np.concatenate((theta[:,np.newaxis],phi[:,np.newaxis],np.absolute(value[:,np.newaxis]), value[:,np.newaxis] , value_sign[:,np.newaxis]), axis=1)
+
+#np.savetxt('output.dat', output)
 
 #Writing to file in correct format
 if os.path.exists("directional.gnuplot"):
@@ -57,7 +59,7 @@ file=open("directional.gnuplot","ab")
 
 i=0
 while(i<(len(theta)-1)):
-    np.savetxt(file,output[i,:] ,fmt="%1.8E",delimiter=' ', newline=' ')
+    np.savetxt(file,output[i,:] ,fmt="%1.5E",delimiter=' ', newline=' ')
     np.savetxt(file,['\n'],fmt='%s',newline='')
     if(np.abs(theta[i+1]-theta[i])<1E-5):
         i = i+1
@@ -68,7 +70,7 @@ while(i<(len(theta)-1)):
         continue
 
 #last block
-np.savetxt(file,output[i,:],fmt="%1.8E", delimiter=' ', newline=' ')
+np.savetxt(file,output[i,:],fmt="%1.5E", delimiter=' ', newline=' ')
 file.close()
 
 #print(output)
