@@ -1,5 +1,6 @@
-#v1.0
-#Input: full operator oscillator and rotatory strengths for each direction, number of roots, intial and final roots and number of directions
+#v1.1
+#Input: full operator oscillator and rotatory strengths for each direction, number of roots, intial and final roots and number of directions.
+#Direction file directions_cart.inp
 #Output: Directional rot strentght and oscillator strength for full operator. All for specified roots
 #Syntax: python3 getmoments.sh <nroots> <initial root> <final root> <number of directions>
 #Dependencies: look at files loaded by np.loadtxt(). Should be in correct format
@@ -27,9 +28,11 @@ if(sys.argv[4] != 0):
     ndir=int(sys.argv[4])
 
 #File with directions
-directions=np.loadtxt("directions.raw")
-if(ndir != len(directions)):
-    print('Number of directions not equal!')
+#directions=np.loadtxt("directions.raw")
+#if(ndir != len(directions)):
+#    print('Number of directions not equal!')
+directions=np.loadtxt("directions_cart.inp")
+
 
 #File check
 if os.path.exists("dir-fullmoments.raw"):
