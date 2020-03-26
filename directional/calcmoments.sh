@@ -14,7 +14,7 @@ rm -f momentsfullop* #removing file to prevent append errors in python
 rm -f tmoments.dat 
 
 #File with all the directions
-bash $SCRIPTS_DIR/getdirections.sh $1 $2 > directions.raw
+#bash $SCRIPTS_DIR/getdirections.sh $1 $2 > directions.raw
  
 #Creating one data file for each direction
 i=0
