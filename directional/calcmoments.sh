@@ -9,6 +9,7 @@ nroots=$2
 #array with all the lines between which data is located
 dataholders=($(bash $SCRIPTS_DIR/getfullopmoments.sh $1 $2 | grep -n '\---------------------------------------------------------------'| cut -d ":" -f 1))
 len_dataholders=${#dataholders[@]} #length of this array
+ndir=$((len_dataholders/2))
 
 
 #File with all the directions
@@ -32,4 +33,4 @@ python3 $SCRIPTS_DIR/getmoments.py $2 $3 $4 $ndir
 #removing temporary files created by the data getters above
 rm velmoments.raw
 rm mixmoments.raw
-rm fullmoments.raw
+rm fullopmoments.raw
