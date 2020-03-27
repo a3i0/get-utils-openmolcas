@@ -28,7 +28,7 @@ sed '1,9 d' mixmoments.dat | sed '/Direction/d' | sed '/From/d' | sed '/--/d' | 
 
 
 
-python3 $SCRIPTS_DIR/getmoments.py $2 $3 $4 ndir
+python3 $SCRIPTS_DIR/getmoments.py $2 $3 $4 $ndir
 #removing temporary files created by the data getters above
 rm velmoments.raw
 rm mixmoments.raw
