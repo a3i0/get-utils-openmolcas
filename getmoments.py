@@ -1,4 +1,4 @@
-#v2.0
+#v2.1
 #Input: RASSI State energies, Dipole, velocity and angular momentum components, full operator oscillator and rotatory strengths, number of roots, intial and final roots
 #Output: Rot strength in mixed, veocity and for full operator, dipole strength in length, osc strength in velociy and full operator. Excitaion energy. All for specified roots
 #Syntax: python3 getmoments.sh <nroots> <initial root> <final root>
@@ -39,7 +39,7 @@ v=[data[((6*nroots)-1+ri),(rf-1)],data[((7*nroots)-1+ri),(rf-1)],data[((8*nroots
 u=np.array(u)
 l=np.array(l)
 v=np.array(v)
-m=-0.5*l
+m=-1.0*-1.0*0.5*l #corrected sign to take mfi instead of mif
 
 #rotatory strengths in mixed
 rot_str=np.dot(u,m)
@@ -72,10 +72,11 @@ for i in range(len(fullopdata)):
     init=int(fullopdata[i,0])
     final=int(fullopdata[i,1])
     fulloprot[init-1,final-1]=fullopdata[i,3]
-    fulloprot[final-1,init-1]=fulloprot[init-1,final-1] #symmetrising
+    fulloprot[final-1,init-1]=-fulloprot[init-1,final-1] #antisymmetrising
     fulloposc[init-1,final-1]=fullopdata[i,2]
-    fulloposc[final-1,init-1]=fulloposc[init-1,final-1] #symmetrising
+    fulloposc[final-1,init-1]=-fulloposc[init-1,final-1] #antisymmetrising
 
+fulloprot=fulloprot*-1.0 #sign correction
 
 rot_str_fullop=fulloprot[ri-1,rf-1]*1.967e-3 #converting from reduced rot str to atomic units
 rot_str_fullop_cgs=rot_str_fullop*471.44e-40 #converting from a.u to cgs
