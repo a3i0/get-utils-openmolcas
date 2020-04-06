@@ -23,7 +23,7 @@ paste -d ' ' velmoments2.tmp velmoments1.tmp > veltensor.raw
 paste -d ' ' mixmoments2.tmp mixmoments1.tmp > mixtensor.raw
 
 #python3 $SCRIPTS_DIR/com.py $geomfile
-python3 $SCRIPTS_DIR/calcmoments_tensor.py $nroots $ri $rf $angle_grid_size
+python3 $SCRIPTS_DIR/getmoments_tensor.py $nroots $ri $rf $angle_grid_size
 
 #removing raw and tmp files
 rm velmoments1.tmp velmoments2.tmp mixmoments1.tmp mixmoments2.tmp
