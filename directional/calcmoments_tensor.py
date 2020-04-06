@@ -1,6 +1,6 @@
 #Input: veltensor.raw, mixtensor.raw, nroots, grid size of angles (factor by which to divide 360),
 #initial and final roots of selected transition
-#Output:
+#Output: pm3d-ready files for gnuplot wit format <theta> <phi> <value> <abs_value>
 #Syntax: python3 calcmoments_tensor.py <nroots> <ri> <rf> <angle_grid_size>
 
 import numpy as np
@@ -72,22 +72,27 @@ mixtensor=mixtensor*-1.0
 #tensor rotation to get value at angle
 theta=np.linspace(-180,180,angle_grid_size+1) #range of angles. Angles as defined by gnuplot's spherical mapping (geographical)
 phi=np.linspace(-90,90,angle_grid_size+1)
-u=np.array([np.cos(theta*np.pi/180.0)*np.cos(phi*np.pi/180.0) , np.sin(theta*np.pi/180.0)*np.cos(phi*np.pi/180.0) , np.sin(phi*np.pi/180.0)]) #returns 3xangle_grid_size array with each angle multiplication on each column
+theta=theta*np.pi/180.0 #converting to radians
+phi=phi*np.pi/180.0
 
+u=np.array([np.tensordot(np.cos(theta),np.cos(phi),axes=0),np.tensordot(np.sin(theta),np.cos(phi),axes=0), np.tensordot(np.ones(len(theta)),np.sin(phi),axes=0)]) #returns
+#3xangle_grid_sizexangle_grid_size tensor of all direction vectors. u_{ijk}. i={x,y,z}, j={theta}, k={phi}
+#u=np.array([np.cos(theta*np.pi/180.0)*np.cos(phi*np.pi/180.0) , np.sin(theta*np.pi/180.0)*np.cos(phi*np.pi/180.0) , np.sin(phi*np.pi/180.0)]) #returns 3xangle_grid_size array with each angle multiplication on each column
+Rvelu=np.einsum('ij,jkl', veltensor,u) #sums over (repeated) index j for all i,j and l
+Rmixu=np.einsum('ij,jkl', mixtensor,u)
 
+uTRvelu=np.einsum('ijr,rji->ji', np.transpose(u),Rvelu) #sums over (repeated) index r only for indices i and j and returns them in reverse order (=(theta,phi))
+uTRmixu=np.einsum('ijr,rji->ji', np.transpose(u),Rmixu)
 
-veldir=np.einsum('ij,jk->i', np.transpose(u), np.matmul(veltensor,u)) #effiecient, vectorised and no redundant calculations (which simple matmuls would have)
-mixdir=np.einsum('ij,jk->i', np.transpose(u), np.matmul(mixtensor,u))
+#veldir=np.einsum('ij,jk->i', np.transpose(u), np.matmul(veltensor,u)) #effiecient, vectorised and no redundant calculations (which simple matmuls would have)
+#mixdir=np.einsum('ij,jk->i', np.transpose(u), np.matmul(mixtensor,u))
 
 #saving
 velfile=open('dir-velmoments_fromtensor.raw','w')
 mixfile=open('dir-mixmoments_fromtensor.raw','w')
 for i in range(len(theta)):
-    velfile.writelines([str(theta[i]), ' ', str(phi[i]), ' ' , str(veldir[i]), '\n'])
-    mixfile.writelines([str(theta[i]), ' ', str(phi[i]), ' ' , str(mixdir[i]), '\n'])
-
-#print(veldir)
-#print(mixdir)
-
-#veltensor=np.zeros(shape=(nroots,nroots,3,3)) #inefficient. change if possible
-#mixtensor=np.zeros(shape=(nroots,nroots,3,3))
+    for j in range(len(phi)):
+        velfile.writelines([str(theta[i]*180.0/np.pi), ' ', str(phi[j]*180.0/np.pi), ' ' , str(uTRvelu[i,j]), ' ', str(np.abs(uTRvelu[i,j])), '\n'])
+        mixfile.writelines([str(theta[i]*180.0/np.pi), ' ', str(phi[j]*180.0/np.pi), ' ' , str(uTRmixu[i,j]), ' ', str(np.abs(uTRmixu[i,j])), '\n'])
+    velfile.write('\n') #to have correct format for pm3d
+    mixfile.write('\n')
