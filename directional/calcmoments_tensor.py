@@ -63,8 +63,11 @@ mixtensor[2,0]=mixtensor[0,2]
 mixtensor[2,1]=mixtensor[1,2]
 
 #unit conversion
-veltensor=veltensor*1.967e-3*471.44e-40
-mixtensor=mixtensor*1.967e-3*471.44e-40
+veltensor=veltensor*9.274e-41
+mixtensor=mixtensor*9.274e-41
+#sign convention fix
+veltensor=veltensor*-1.0
+mixtensor=mixtensor*-1.0
 
 #tensor rotation to get value at angle
 theta=np.linspace(-180,180,angle_grid_size+1) #range of angles. Angles as defined by gnuplot's spherical mapping (geographical)
