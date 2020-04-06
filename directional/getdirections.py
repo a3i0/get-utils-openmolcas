@@ -1,18 +1,13 @@
-#v1.0
-#Input = geom file, grid size(factor by which to divide 360). 
-#Output = directions.inp, a list of directions in cartesian and spherical coordinates. 
-#syntax: python3 getdirections.py <input_geom> <grid size>
-
-import numpy as np
+#v1.1
+#Input = geom file, grid size(factor by which to divide 360).
+#Output = directions.inp, a list of directions in cartesian and spherical coordinates.
+#syntax: python3 getdirections.py <grid size>
 import sys
+import numpy as np
 
-geom=np.loadtxt(sys.argv[1],skiprows=2, usecols=(1,2,3)) #skips first 2 rows and reads column 2,3 and 4 from first argument passed to py file
-natoms=np.loadtxt(sys.argv[1],max_rows=1) #reads first row of input file
+angle_grid_size=int(sys.argv[1]) #divides 360 degrees into angle_grid_size parts in both xy and xz planes
 
-com=sum(geom)/natoms #centre of mass. sum() sums up rows 
-angle_grid_size=int(sys.argv[2]) #divides 360 degrees into angle_grid_size parts in both xy and xz planes
-
-theta=np.linspace(0,360,angle_grid_size+1)
+theta=np.linspace(-180,180,angle_grid_size+1) #range of angles
 phi=np.linspace(-90,90,angle_grid_size+1)
 r=1
 directions_sph=np.zeros(shape=((angle_grid_size+1)**2,3))
@@ -41,7 +36,7 @@ for i in range(angle_grid_size+1):
 
 
 
-                
+
 #shifting by adding com
 #directions_xy=com+directions_xy
 #directions_xz=com+directions_xz
@@ -52,4 +47,3 @@ for i in range(angle_grid_size+1):
 #saving in appropriate format for inputting into molcas. header adds lines before data and comments defaults to '#')
 np.savetxt('directions_sph.inp', directions_sph)
 np.savetxt('directions_cart.inp', directions_cart)
-
