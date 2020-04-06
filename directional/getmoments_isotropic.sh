@@ -1,4 +1,5 @@
-#Input: .log file
+#Different version for isotropic files
+#Input: .log file with isotropic full moments. 
 #Output: Files with directional velocity gague and directional mixed gauge CD values
 #Syntax: bash getmoments.sh <.log file>
 
