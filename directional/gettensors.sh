@@ -1,5 +1,5 @@
 #Input: getmoments_isotropic.sh, .log file with one set of velocity and mixed rotatory strenghts
-#calcmoments_tensor.py, com.py, angle_grid_size (factor by which to divide 360)
+#calcmoments_tensor.py, angle_grid_size (factor by which to divide 360)
 #Output: File with velocity and length gauge rotatory strength tensors for all roots
 #with format <root1> <root2> <isotropic value> <Rxx> <Rxy> <Rxz> <Ryy> <Ryz> <Rzz>.
 #Also calls python to run calcmoments_tensor.py
