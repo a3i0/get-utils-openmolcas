@@ -38,7 +38,7 @@ for i in range(len(veldata)):
                 veltensor[0,0]=veldata[i+j,3]
                 veltensor[0,1]=veldata[i+j,4]
                 veltensor[0,2]=veldata[i+j,5]
-                veltensor[1,1]=veldata[i+1,6]
+                veltensor[1,1]=veldata[i+j,6]
                 veltensor[1,2]=veldata[i+j,7]
                 veltensor[2,2]=veldata[i+j,8]
 
@@ -50,7 +50,7 @@ for i in range(len(mixdata)):
                 mixtensor[0,0]=mixdata[i+j,3]
                 mixtensor[0,1]=mixdata[i+j,4]
                 mixtensor[0,2]=mixdata[i+j,5]
-                mixtensor[1,1]=mixdata[i+1,6]
+                mixtensor[1,1]=mixdata[i+j,6]
                 mixtensor[1,2]=mixdata[i+j,7]
                 mixtensor[2,2]=mixdata[i+j,8]
 
