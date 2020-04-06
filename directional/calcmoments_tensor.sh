@@ -3,7 +3,7 @@
 #Output: File with velocity and length gauge rotatory strength tensors for all roots
 #with format <root1> <root2> <isotropic value> <Rxx> <Rxy> <Rxz> <Ryy> <Ryz> <Rzz>.
 #Also calls python to run calcmoments_tensor.py
-#Syntax: bash gettensors.sh <.log file> <nroots> <root1> root2> <angle_grid_size>
+#Syntax: bash calcmoments_tensor.sh <.log file> <nroots> <root1> root2> <angle_grid_size>
 
 nroots=$2
 ri=$3
