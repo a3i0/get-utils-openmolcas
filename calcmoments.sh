@@ -7,15 +7,15 @@ SCRIPTS_DIR=$(dirname $0) #variable with the directory of all the script files
 
 #creating raw data file to be loaded on to python
 #truncated moments
-bash $SCRIPTS_DIR/getmoments.sh $1 $2 | sed '/PROPERTY/ d' | sed '/STATE/ d' | cut -d " " -f 1 --complement | awk '{$1=""; print $0}' | cat > moments.raw
+bash $SCRIPTS_DIR/getmoments.sh $1 $2 | sed '/PROPERTY/ d' | sed '/STATE/ d' | cut -d " " -f 1 --complement | awk '{$1=""; print $0}' > moments.raw
 
 #Full operator transition moments
 startline=$(bash $SCRIPTS_DIR/getfullopmoments.sh $1 $2 | grep -n '\--------' | cut -d ":" -f 1| sed -n 2p)
 endline=$(bash $SCRIPTS_DIR/getfullopmoments.sh $1 $2 | grep -n '\--------' | cut -d ":" -f 1| sed -n 3p)
-bash $SCRIPTS_DIR/getfullopmoments.sh $1 $2 | sed "$((startline+1)),$((endline-1)) !d" | cat > momentsfullop.raw
+bash $SCRIPTS_DIR/getfullopmoments.sh $1 $2 | sed "$((startline+1)),$((endline-1)) !d" > momentsfullop.raw
 
 #Energies
-bash $SCRIPTS_DIR/getenergies.sh $1 $2 | cut -c 1-43 --complement | cat > energies.raw 
+bash $SCRIPTS_DIR/getenergies.sh $1 $2 | cut -c 1-43 --complement > energies.raw 
 
 #removing temporary files created by the data getters above
 
