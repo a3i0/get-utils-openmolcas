@@ -29,16 +29,14 @@ bash $SCRIPTS_DIR/getmoments.sh $1
 #          root1 root2 rot.str. 0
 cat velmoments.dat | sed '/^++/,+2d' | sed '/From/d' | sed '/--/d' | sed 's/Direction of the k-vector:/-1/g' | sed '/^[[:space:]]*$/d' | awk '{print $1 " " $2 " " $3 " " $4 " " 0}' | awk '{print $1 " "$2 " " $3 " " $4}' > velmoments.raw
 cat mixmoments.dat | sed '/^++/,+7d' | sed '/From/d' | sed '/--/d' | sed 's/Direction of the k-vector:/-1/g' | sed '/^[[:space:]]*$/d' | awk '{print $1 " " $2 " " $3 " " $4 " " 0}' | awk '{print $1 " "$2 " " $3 " " $4}' > mixmoments.raw
- 
 
-#sed '1,4 d' velmoments.dat | sed '/Direction/d' | sed '/From/d' | sed '/--/d' | sed "s/^ *//g" > velmoments.raw
-#sed '1,9 d' mixmoments.dat | sed '/Direction/d' | sed '/From/d' | sed '/--/d' | sed "s/^ *//g" > mixmoments.raw
+
 
 
 
 
 python3 $SCRIPTS_DIR/getmoments.py $2 $3 $4 $ndir
 #removing temporary files created by the data getters above
-#rm velmoments.raw
-#rm mixmoments.raw
-#rm fullopmoments.raw
+rm velmoments.raw
+rm mixmoments.raw
+rm fullopmoments.raw

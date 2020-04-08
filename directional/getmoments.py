@@ -49,9 +49,6 @@ for i in range(len(fullopdata)):
     fullmoments[init-1,final-1,k-1]=fullopdata[i,3]
     fullmoments[final-1,init-1,k-1]=-fullmoments[init-1,final-1,k-1] #anti-ymmetrising
 
-#if(k!=ndir):
-#    print('All directions not accounted for!')
-
 
 fullmoments=fullmoments*-1.0 #sign correction
 fullmoments_cgs=fullmoments*9.274E-41 #unit conversion
@@ -84,12 +81,6 @@ for i in range(len(veldata)):
     velmoments[final-1,init-1,k-1]=-velmoments[init-1,final-1,k-1] #anti-symmetrising
 
 
-#for k in range(ndir): #This loop assumes that velmoments.raw and mixmoments.raw have moments for all roots
-#    for i in range(nroots):
-#        for j in range(i+1,nroots):
-#            velmoments[i,j,k] = veldata[j-(i+1) + i*nroots - i*(i+1)//2 + k*(nroots*(nroots-1))//2 , 2]
-#            velmoments[j,i,k] = -velmoments[i,j,k] #antisymmetrising
-
 mixdata=np.loadtxt("mixmoments.raw")
 directions_mix=np.zeros(shape=((len(mixdata)//(1+(nroots*(nroots-1))//2)) , 3))
 mixmoments=np.zeros(shape=(nroots,nroots,len(directions_mix)))
@@ -106,14 +97,6 @@ for i in range(len(mixdata)):
     final=int(mixdata[i,1])
     mixmoments[init-1,final-1,k-1]=mixdata[i,2]
     mixmoments[final-1,init-1,k-1]=-mixmoments[init-1,final-1,k-1] #anti-symmetrising
-
-#mixmoments=np.zeros(shape=(nroots,nroots,ndir))
-#mixdata=np.loadtxt("mixmoments.raw")
-#for k in range(ndir):
-#    for i in range(nroots):
-#        for j in range(i+1,nroots):
-#            mixmoments[i,j,k] = mixdata[j-(i+1) + i*nroots - i*(i+1)//2 + k*(nroots*(nroots-1))//2 , 2]
-#            mixmoments[j,i,k] = -mixmoments[i,j,k]
 
 #sign correction
 velmoments=velmoments*-1.0
