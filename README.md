@@ -1,5 +1,4 @@
 # get-utils-openmolcas
-test
-1
-2
-3a
+Scripts for extracting circular dichroism data from .log files of MOLCAS 
+
+#Sections: Directional, for directional data and main, for regular data
