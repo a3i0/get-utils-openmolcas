@@ -80,7 +80,7 @@ for i in range(len(veldata)):
         continue
     init=int(veldata[i,0])
     final=int(veldata[i,1])
-    velmoments[init-1,final-1,k-1]=veldata[i,3]
+    velmoments[init-1,final-1,k-1]=veldata[i,2]
     velmoments[final-1,init-1,k-1]=-velmoments[init-1,final-1,k-1] #anti-symmetrising
 
 
@@ -104,7 +104,7 @@ for i in range(len(mixdata)):
         continue
     init=int(mixdata[i,0])
     final=int(mixdata[i,1])
-    mixmoments[init-1,final-1,k-1]=mixdata[i,3]
+    mixmoments[init-1,final-1,k-1]=mixdata[i,2]
     mixmoments[final-1,init-1,k-1]=-mixmoments[init-1,final-1,k-1] #anti-symmetrising
 
 #mixmoments=np.zeros(shape=(nroots,nroots,ndir))
