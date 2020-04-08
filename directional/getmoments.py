@@ -67,7 +67,7 @@ for i in range(ndir):
 
 #Truncated Operator moments
 veldata=np.loadtxt("velmoments.raw") #does not give error when loading files with varying number of columns. filling_values fills the missing values
-directions_vel=np.zeros(shape=(len(veldata)-(nroots*(nroots-1)//2) , 3))
+directions_vel=np.zeros(shape=((len(veldata)//(1+(nroots*(nroots-1))//2)) , 3)) #length of this array assumes all transitons are printed for each direction
 velmoments=np.ones(shape=(nroots,nroots,len(directions_vel))) #3D array with all moments of all directions
 
 k=0
@@ -91,7 +91,7 @@ for i in range(len(veldata)):
 #            velmoments[j,i,k] = -velmoments[i,j,k] #antisymmetrising
 
 mixdata=np.loadtxt("mixmoments.raw")
-directions_mix=np.zeros(shape=(len(mixdata)-(nroots*(nroots-1)//2) , 3))
+directions_mix=np.zeros(shape=((len(mixdata)//(1+(nroots*(nroots-1))//2)) , 3))
 mixmoments=np.zeros(shape=(nroots,nroots,len(directions_mix)))
 
 k=0
