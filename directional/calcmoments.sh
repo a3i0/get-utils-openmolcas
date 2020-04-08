@@ -15,22 +15,30 @@ ndir=$((len_dataholders/2))
 #File with all the directions
 #bash $SCRIPTS_DIR/getdirections.sh $1 $2 > directions.raw
 
-#creating fullop raw files
-bash $SCRIPTS_DIR/getfullopmoments.sh $1 $2 | sed '/maximum/d' | sed '/minimum/d' |  sed -e '/Time for/,+100d'| sed -e '/++/,+7d' | sed '/^-/d' | sed 's/^ *//g' | sed '/^[[:space:]]*$/d' | sed 's/------*/0 0 0 0 0/' | awk '{$NF=""}1' > fullopmoments.raw
+#creating fullop raw files.
+#Format= -1 x y
+#         root1 root2 osc.str. rot.str.
+bash $SCRIPTS_DIR/getfullopmoments.sh $1 $2 | sed '/maximum/d' | sed '/minimum/d' |  sed -e '/Time for/,+100d'| sed -e '/++/,+2d' | sed '/for osc./,+2d' | sed '/--/d' | sed 's/Direction of the k-vector:/-1/g' | sed '/^[[:space:]]*$/d' | awk '{print $1 " " $2 " " $3 " "  $4}' > fullopmoments.raw
 
 
 #Truncated Operators
 #Creating velmoments.dat and mixmoment.dat
 bash $SCRIPTS_DIR/getmoments.sh $1
-#creating trunctaed operator raw files
-sed '1,4 d' velmoments.dat | sed '/Direction/d' | sed '/From/d' | sed '/--/d' | sed "s/^ *//g" > velmoments.raw
-sed '1,9 d' mixmoments.dat | sed '/Direction/d' | sed '/From/d' | sed '/--/d' | sed "s/^ *//g" > mixmoments.raw
+#creating trunctaed operator raw files.
+#Format = -1 x y z
+#          root1 root2 rot.str. 0
+cat velmoments.dat | sed '/^++/,+2d' | sed '/From/d' | sed '/--/d' | sed 's/Direction of the k-vector:/-1/g' | sed '/^[[:space:]]*$/d' | awk '{print $1 " " $2 " " $3 " " $4 " " 0}' | awk '{print $1 " "$2 " " $3 " " $4}' > velmoments.raw
+cat mixmoments.dat | sed '/^++/,+7d' | sed '/From/d' | sed '/--/d' | sed 's/Direction of the k-vector:/-1/g' | sed '/^[[:space:]]*$/d' | awk '{print $1 " " $2 " " $3 " " $4 " " 0}' | awk '{print $1 " "$2 " " $3 " " $4}' > mixmoments.raw
+ 
+
+#sed '1,4 d' velmoments.dat | sed '/Direction/d' | sed '/From/d' | sed '/--/d' | sed "s/^ *//g" > velmoments.raw
+#sed '1,9 d' mixmoments.dat | sed '/Direction/d' | sed '/From/d' | sed '/--/d' | sed "s/^ *//g" > mixmoments.raw
 
 
 
 
 python3 $SCRIPTS_DIR/getmoments.py $2 $3 $4 $ndir
 #removing temporary files created by the data getters above
-rm velmoments.raw
-rm mixmoments.raw
-rm fullopmoments.raw
+#rm velmoments.raw
+#rm mixmoments.raw
+#rm fullopmoments.raw
