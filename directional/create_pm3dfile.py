@@ -27,8 +27,9 @@ value=np.take(value,theta_sorted_indices)
 
 i=0
 j=0
+thrs=1E-3 #threshold for making blocks in data
 while(i<(len(theta)-1)):
-    if(np.abs(theta[i+1]-theta[i])<1E-5):
+    if(np.abs(theta[i+1]-theta[i])<thrs):
         i=i+1
         continue
     else:
@@ -61,7 +62,7 @@ i=0
 while(i<(len(theta)-1)):
     np.savetxt(file,output[i,:] ,fmt="%1.5E",delimiter=' ', newline=' ')
     np.savetxt(file,['\n'],fmt='%s',newline='')
-    if(np.abs(theta[i+1]-theta[i])<1E-5):
+    if(np.abs(theta[i+1]-theta[i])<thrs):
         i = i+1
         continue
     else:
