@@ -104,8 +104,8 @@ file.writelines(["Dipole moment (length,vector): ", str(u[0]), " ", str(u[1]), "
 file.writelines(["Dipole moment (velocity,vector): ", str(v[0]), " ", str(v[1]), " ", str(v[2]), " (a.u) ", "\n" ])
 file.writelines(["Magnetic strength (magnitude): ", str(mag_str), " (a.u) ", str(mag_str_cgs), " (cgs) ", "\n"])
 file.writelines(["Magnetic moment (vector): ", str(m[0]), " ", str(m[1]), " ", str(m[2]), "\n"])
-file.writelines(["dipole-magnetic angle (length): ", str(theta_len) "\n"])
-file.writelines(["dipole-magnetic angle (velocity): ", str(theta_vel) "\n"])
+file.writelines(["dipole-magnetic angle (length): ", str(theta_len), "\n"])
+file.writelines(["dipole-magnetic angle (velocity): ", str(theta_vel), "\n"])
 file.writelines(["Excitation Energy (vertical): ", str(E1), " (a.u) ", str(E1_ev), " (eV) ", "\n"])
 #file.writelines(["Osccilator strengths (velocity): " , str(osc_strength_vel), "\n"])
 
