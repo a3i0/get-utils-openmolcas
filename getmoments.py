@@ -58,6 +58,9 @@ dip_str_vel_cgs=dip_str_vel*64591e-40
 mag_str=abs(np.dot(m,m))
 m_cgs=m*1.85480e-23/(3.33564e-14)
 mag_str_cgs=abs(np.dot(m_cgs,m_cgs)) #units taken from Wikipedia (https://en.wikipedia.org/wiki/Hartree_atomic_units and https://en.wikipedia.org/wiki/Magnetic_moment#Units)
+#angle between dipole and magnetic vectors
+theta_len=np.arccos(rot_str/(np.sqrt(dip_str_len*mag_str)))
+theta_vel=np.arccos(rot_str/(np.sqrt(dip_str_vel*mag_str)))
 #oscillatory strength in velocity
 if (ri == rf):
     osc_str_vel=0
@@ -94,14 +97,15 @@ file=open("tmoments.dat","w")
 file.writelines(["Rotatory strengths (mixed): ", str(rot_str), " (a.u) ", str(rot_str_cgs), " (cgs) ", "\n"])
 file.writelines(["Rotatory strengths (velocity): ", str(rot_str_vel), " (a.u) ", str(rot_str_vel_cgs), " (cgs) ", "\n"])
 file.writelines(["Rotatory strengths (fulloperator):", str(rot_str_fullop), " (a.u) " , str(rot_str_fullop_cgs), " (cgs)", "\n"])
-file.writelines(["Dipole strengths (length): " , str(dip_str_len), " (a.u) ",  str(dip_str_len_cgs), " (cgs)", "\n"])
+file.writelines(["Oscillator strengths (velocity): " , str(osc_str_vel), "\n"])
+file.writelines(["Oscillator strengths (fulloperator):", str(osc_str_fullop), "\n"])
 file.writelines(["Dipole strengths (velocity): ", str(dip_str_vel), " (a.u) ", str(dip_str_vel_cgs), " (cgs) ", "\n"])
 file.writelines(["Dipole moment (length,vector): ", str(u[0]), " ", str(u[1]), " ", str(u[2]), " (a.u) ", "\n" ])
 file.writelines(["Dipole moment (velocity,vector): ", str(v[0]), " ", str(v[1]), " ", str(v[2]), " (a.u) ", "\n" ])
 file.writelines(["Magnetic strength (magnitude): ", str(mag_str), " (a.u) ", str(mag_str_cgs), " (cgs) ", "\n"])
 file.writelines(["Magnetic moment (vector): ", str(m[0]), " ", str(m[1]), " ", str(m[2]), "\n"])
-file.writelines(["Oscillator strengths (velocity): " , str(osc_str_vel), "\n"])
-file.writelines(["Oscillator strengths (fulloperator):", str(osc_str_fullop), "\n"])
+file.writelines(["dipole-magnetic angle (length): ", str(theta_len) "\n"])
+file.writelines(["dipole-magnetic angle (velocity): ", str(theta_vel) "\n"])
 file.writelines(["Excitation Energy (vertical): ", str(E1), " (a.u) ", str(E1_ev), " (eV) ", "\n"])
 #file.writelines(["Osccilator strengths (velocity): " , str(osc_strength_vel), "\n"])
 
