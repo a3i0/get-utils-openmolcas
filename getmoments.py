@@ -61,6 +61,9 @@ mag_str_cgs=abs(np.dot(m_cgs,m_cgs)) #units taken from Wikipedia (https://en.wik
 #angle between dipole and magnetic vectors
 theta_len=np.arccos(rot_str/(np.sqrt(dip_str_len*mag_str)))
 theta_vel=np.arccos(np.dot(v,m)/(np.sqrt(dip_str_vel*mag_str)))
+theta_len_degrees=theta_len*180.0/np.pi
+theta_vel_degrees=theta_vel*180.0/np.pi
+
 #oscillatory strength in velocity
 if (ri == rf):
     osc_str_vel=0
@@ -104,8 +107,8 @@ file.writelines(["Dipole moment (length,vector): ", str(u[0]), " ", str(u[1]), "
 file.writelines(["Dipole moment (velocity,vector): ", str(v[0]), " ", str(v[1]), " ", str(v[2]), " (a.u) ", "\n" ])
 file.writelines(["Magnetic strength (magnitude): ", str(mag_str), " (a.u) ", str(mag_str_cgs), " (cgs) ", "\n"])
 file.writelines(["Magnetic moment (vector): ", str(m[0]), " ", str(m[1]), " ", str(m[2]), "\n"])
-file.writelines(["dipole-magnetic angle (length): ", str(theta_len), "\n"])
-file.writelines(["dipole-magnetic angle (velocity): ", str(theta_vel), "\n"])
+file.writelines(["dipole-magnetic angle (length): ", str(theta_len), " (radians) ",  str(theta_len_degrees), " (degrees) ", "\n"])
+file.writelines(["dipole-magnetic angle (velocity): ", str(theta_vel), " (radians) ",  str(theta_vel_degrees), " (degrees) ", "\n"])
 file.writelines(["Excitation Energy (vertical): ", str(E1), " (a.u) ", str(E1_ev), " (eV) ", "\n"])
 #file.writelines(["Osccilator strengths (velocity): " , str(osc_strength_vel), "\n"])
 
