@@ -60,7 +60,7 @@ m_cgs=m*1.85480e-23/(3.33564e-14)
 mag_str_cgs=abs(np.dot(m_cgs,m_cgs)) #units taken from Wikipedia (https://en.wikipedia.org/wiki/Hartree_atomic_units and https://en.wikipedia.org/wiki/Magnetic_moment#Units)
 #angle between dipole and magnetic vectors
 theta_len=np.arccos(rot_str/(np.sqrt(dip_str_len*mag_str)))
-theta_vel=np.arccos(rot_str/(np.sqrt(dip_str_vel*mag_str)))
+theta_vel=np.arccos(np.dot(v,m)/(np.sqrt(dip_str_vel*mag_str)))
 #oscillatory strength in velocity
 if (ri == rf):
     osc_str_vel=0
