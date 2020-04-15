@@ -1,6 +1,7 @@
 #v2.1
 #Input: RASSI State energies, Dipole, velocity and angular momentum components, full operator oscillator and rotatory strengths, number of roots, intial and final roots
 #Output: Rot strength in mixed, veocity and for full operator, dipole strength in length, osc strength in velociy and full operator. Excitaion energy. All for specified roots
+#        in a file tmoments.dat
 #Syntax: python3 getmoments.sh <nroots> <initial root> <final root>
 #Dependencies: look at files loaded by np.loadtxt(). Should be in correct format
 

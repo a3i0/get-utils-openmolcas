@@ -1,6 +1,7 @@
 #v1.0
 #Input: .log file, number of roots, roots between which transition moments are to be calculated
-#Output: raw files with dipole, angular momentum and velocity componenents and full operator transitions for python (.raw). Also calls python to do calculations.
+#Output: raw files with dipole, angular momentum and velocity componenents and full operator transitions for python (.raw). Also calls python to do calculations
+#        which returns tmoments.dat
 #syntax: bash calcmoments.sh <.log> <nroots> <root1> <root2>
 
 SCRIPTS_DIR=$(dirname $0) #variable with the directory of all the script files
@@ -17,10 +18,8 @@ bash $SCRIPTS_DIR/getfullopmoments.sh $1 $2 | sed "$((startline+1)),$((endline-1
 #Energies
 bash $SCRIPTS_DIR/getenergies.sh $1 $2 | cut -c 1-43 --complement > energies.raw 
 
-#removing temporary files created by the data getters above
-
-
-
-
+#Pyhtin script that does all calculations and returns tmoments.dat
 python $SCRIPTS_DIR/getmoments.py $2 $3 $4
 
+#removing temporary files created by the data getters above
+rm energies.raw momentsfullop.raw moments.raw
