@@ -65,11 +65,13 @@ theta_vel=np.arccos(np.dot(v,m)/(np.sqrt(dip_str_vel*mag_str)))
 theta_len_degrees=theta_len*180.0/np.pi
 theta_vel_degrees=theta_vel*180.0/np.pi
 
-#oscillatory strength in velocity
+#oscillatory strengths
 if (ri == rf):
     osc_str_vel=0
+    osc_str_len=0
 
 osc_str_vel=2.0*dip_str_vel/(3.0*E1)
+osc_str_len=2.0*dip_str_len*E1
 
 #full operator moments
 fullopdata=np.loadtxt("momentsfullop.raw")
@@ -101,17 +103,18 @@ file=open("tmoments.dat","w")
 file.writelines(["Rotatory strengths (mixed): ", str(rot_str), " (a.u) ", str(rot_str_cgs), " (cgs) ", "\n"])
 file.writelines(["Rotatory strengths (velocity): ", str(rot_str_vel), " (a.u) ", str(rot_str_vel_cgs), " (cgs) ", "\n"])
 file.writelines(["Rotatory strengths (fulloperator):", str(rot_str_fullop), " (a.u) " , str(rot_str_fullop_cgs), " (cgs)", "\n"])
-file.writelines(["Oscillator strengths (velocity): " , str(osc_str_vel), "\n"])
-file.writelines(["Oscillator strengths (fulloperator):", str(osc_str_fullop), "\n"])
+file.writelines(["Oscillator strength (length): " , str(osc_str_len), "\n"])
+file.writelines(["Oscillator strength (velocity): " , str(osc_str_vel), "\n"])
+file.writelines(["Oscillator strength (fulloperator):", str(osc_str_fullop), "\n"])
 file.writelines(["Dipole strengths (length): ", str(dip_str_len), " (a.u) ", str(dip_str_len_cgs), " (cgs) ", "\n"])
 file.writelines(["Dipole strengths (velocity): ", str(dip_str_vel), " (a.u) ", str(dip_str_vel_cgs), " (cgs) ", "\n"])
 file.writelines(["Dipole moment (length,vector): ", str(u[0]), " ", str(u[1]), " ", str(u[2]), " (a.u) ", "\n" ])
 file.writelines(["Dipole moment (velocity,vector): ", str(v[0]), " ", str(v[1]), " ", str(v[2]), " (a.u) ", "\n" ])
-file.writelines(["Magnetic strength (magnitude): ", str(mag_str), " (a.u) ", str(mag_str_cgs), " (cgs) ", "\n"])
+file.writelines(["Magnetic strengths (magnitude): ", str(mag_str), " (a.u) ", str(mag_str_cgs), " (cgs) ", "\n"])
 file.writelines(["Magnetic moment (vector): ", str(m[0]), " ", str(m[1]), " ", str(m[2]), "\n"])
-file.writelines(["dipole-magnetic angle (length): ", str(theta_len), " (radians) ",  str(theta_len_degrees), " (degrees) ", "\n"])
-file.writelines(["dipole-magnetic angle (velocity): ", str(theta_vel), " (radians) ",  str(theta_vel_degrees), " (degrees) ", "\n"])
+file.writelines(["dipole-magnetic angles (length): ", str(theta_len), " (radians) ",  str(theta_len_degrees), " (degrees) ", "\n"])
+file.writelines(["dipole-magnetic angles (velocity): ", str(theta_vel), " (radians) ",  str(theta_vel_degrees), " (degrees) ", "\n"])
 file.writelines(["Excitation Energy (vertical): ", str(E1), " (a.u) ", str(E1_ev), " (eV) ", "\n"])
-#file.writelines(["Osccilator strengths (velocity): " , str(osc_strength_vel), "\n"])
+
 
 file.close()
