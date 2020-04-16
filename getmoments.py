@@ -71,7 +71,7 @@ if (ri == rf):
     osc_str_len=0
 
 osc_str_vel=2.0*dip_str_vel/(3.0*E1)
-osc_str_len=2.0*dip_str_len*E1
+osc_str_len=2.0*dip_str_len*E1/(3.0)
 
 #full operator moments
 fullopdata=np.loadtxt("momentsfullop.raw")
