@@ -105,7 +105,7 @@ file.writelines(["Rotatory strengths (velocity): ", str(rot_str_vel), " (a.u) ",
 file.writelines(["Rotatory strengths (fulloperator):", str(rot_str_fullop), " (a.u) " , str(rot_str_fullop_cgs), " (cgs)", "\n"])
 file.writelines(["Oscillator strength (length): " , str(osc_str_len), "\n"])
 file.writelines(["Oscillator strength (velocity): " , str(osc_str_vel), "\n"])
-file.writelines(["Oscillator strength (fulloperator):", str(osc_str_fullop), "\n"])
+file.writelines(["Oscillator strength (fulloperator): ", str(osc_str_fullop), "\n"])
 file.writelines(["Dipole strengths (length): ", str(dip_str_len), " (a.u) ", str(dip_str_len_cgs), " (cgs) ", "\n"])
 file.writelines(["Dipole strengths (velocity): ", str(dip_str_vel), " (a.u) ", str(dip_str_vel_cgs), " (cgs) ", "\n"])
 file.writelines(["Dipole moment (length,vector): ", str(u[0]), " ", str(u[1]), " ", str(u[2]), " (a.u) ", "\n" ])
