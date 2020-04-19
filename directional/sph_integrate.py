@@ -46,7 +46,37 @@ for i in range(len(phi)):
 
 scp.integrate.trapz(tempharm*np.sin(phipoints[:len(theta)]),phipoints[:len(theta)]) #integral over polar phi. Volume element = sin(phi)d(phi)
 
-myharm1
+#shuffling test
+import random
+def my_shuffle(array): #function that actually returns a shuffled array
+        random.shuffle(array)
+        return array
+
+thetapoints_shuffled=np.ndarray.flatten(np.tensordot(my_shuffle(theta),np.ones(len(phi)), axes=0))
+phipoints_shuffled=np.ndarray.flatten(np.tensordot(np.ones(len(theta)),my_shuffle(phi), axes=0))
+
+myharm1_shuffled=complex(1,0)*np.array(scp.special.sph_harm(0,1,thetapoints_shuffled,phipoints_shuffled))
+myharm1_shuffled=np.real(myharm1_shuffled)
+harmsign1_shuffled=np.sign(myharm1_shuffled)
+
+myharm2_shuffled=complex(1,0)*np.array(scp.special.sph_harm(0,0,thetapoints_shuffled,phipoints_shuffled))
+myharm2_shuffled=np.real(myharm2_shuffled)
+harmsign2=np.sign(myharm2_shuffled)
+
+myharm3_shuffled=(1/np.sqrt(2))*complex(0,1)*np.array(scp.special.sph_harm(-1,1,thetapoints_shuffled,phipoints_shuffled)+scp.special.sph_harm(1,1,thetapoints_shuffled,phipoints_shuffled))
+myharm3_shuffled=np.real(myharm3_shuffled)
+harmsign3_shuffled=np.sign(myharm3_shuffled)
+
+myharm4_shuffled=(1/np.sqrt(2))*np.array(scp.special.sph_harm(-1,1,thetapoints_shuffled,phipoints_shuffled)-scp.special.sph_harm(1,1,thetapoints_shuffled,phipoints_shuffled))
+myharm4_shuffled=np.real(myharm4_shuffled)
+harmsign4_shuffled=np.sign(myharm4_shuffled)
+
+tempharm_shuffled=np.zeros(len(phi))
+for i in range(len(phi)):
+    tempharm_shuffled[i]=scp.integrate.trapz(np.multiply(myharm2_shuffled[i::len(phi)],myharm2_shuffled[i::len(phi)]),thetapoints_shuffled[::len(phi)]) #integrating harm^2 over azimuthal theta
+
+scp.integrate.trapz(tempharm*np.sin(phipoints_shuffled[:len(theta)]),phipoints_shuffled[:len(theta)])
+
 #t = np.linspace(0, 20, 500)
 #plt.plot(t, np.sin(t))
 #plt.show()
