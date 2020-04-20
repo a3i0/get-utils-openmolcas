@@ -44,6 +44,21 @@ norm=scp.integrate.trapz(tempharm*np.sin(phipoints[:len_theta]),phipoints[:len_t
 norm=norm*-1 #as integration over phi takes place from pi to 0 (reverse direction)
 norm
 
+
+#function for getting real spherical harmonics
+def realharm(m,n,theta,phi):
+    if(m==0):
+        return np.real(scp.special.sph_harm(m,n,theta,phi)) #the returned datatype is float and not complex float
+
+    #General formula of real spherical harmonic
+    output=(1/np.sqrt(2))*np.array(scp.special.sph_harm(-np.abs(m),n,theta,phi) + np.sign(m)*(-1)**(np.abs(m))*scp.special.sph_harm(np.abs(m),n,theta,phi))
+    if(m < 0):
+        output=complex(0,1)*output
+
+    return np.real(output) #the returned datatype is float and not complex float
+
+
+
 #Defining various spherical harmonics (https://en.wikipedia.org/wiki/Table_of_spherical_harmonics)
 #s
 harm_00=np.array(scp.special.sph_harm(0,0,thetapoints,phipoints))
@@ -70,6 +85,9 @@ harm_2min1=np.real(harm_2min1)
 harm_20=np.real(harm_20)
 harm_21=np.real(harm_21)
 harm_22=np.real(harm_22)
+
+
+
 
 #norms. We will be dividing the obtained coeffs by the norms as the norms are not exactly zero
 #(tested in sph_integrate.py). The orthogonal ones are pretty orthogonal though, so we do not need to worry about
