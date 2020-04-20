@@ -57,6 +57,31 @@ def realharm(m,n,theta,phi):
 
     return np.real(output) #the returned datatype is float and not complex float
 
+#Vector of spherical harmonics. Order = [(0,0),(-1,1),(0,1),(1,1),(-2,2),(-1,2),(0,2)] where (m,n)and so on
+#Real spherical harmonics defined here: https://en.wikipedia.org/wiki/Table_of_spherical_harmonics
+maxn=2
+sph_harm=np.zeros(shape=(((maxn+1)**2),len(thetapoints)))
+counter=0
+for i in range(maxn+1):
+    for j in range(-i,i+1):
+        sph_harm[counter]=np.array(realharm(j,i,thetapoints,phipoints))
+        counter=counter+1
+
+#norm
+tempsph_norm=np.zeros(shape=(len(sph_harm),len_phi))
+for i in range(len_phi):
+    tempsph_norm[:,i]=scp.integrate.trapz(np.multiply(sph_harm[:,i::len_phi],sph_harm[:,i::len_phi]),thetapoints[::len_phi]) #integrating over azimuthal theta
+
+sph_norm=np.array(scp.integrate.trapz(tempsph_norm*np.sin(phipoints[:len_theta]),phipoints[:len_theta]))
+sph_norm=sph_norm*-1.0
+
+
+
+
+
+
+
+
 
 
 #Defining various spherical harmonics (https://en.wikipedia.org/wiki/Table_of_spherical_harmonics)
