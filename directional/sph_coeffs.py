@@ -59,7 +59,7 @@ def realharm(m,n,theta,phi):
 
 #Vector of spherical harmonics. Order = [(0,0),(-1,1),(0,1),(1,1),(-2,2),(-1,2),(0,2)] where (m,n)and so on
 #Real spherical harmonics defined here: https://en.wikipedia.org/wiki/Table_of_spherical_harmonics
-maxn=2
+maxn=3
 sph_harm=np.zeros(shape=(((maxn+1)**2),len(thetapoints)))
 counter=0
 for i in range(maxn+1):
@@ -89,33 +89,54 @@ coeff=coeff*-1.0
 
 #Dividing all coeffs by the  respective spherical harmonic norms
 coeff=np.divide(coeff,sph_norm)
-
-coeff[0]-c_00
-coeff[1]-c_1min1
-coeff[2]-c_10
-coeff[3]-c_11
-coeff[4]-c_2min2
-coeff[5]-c_2min1
-coeff[6]-c_20
-coeff[7]-c_21
-coeff[8]-c_22
+#
+# coeff[0]-c_00
+# coeff[1]-c_1min1
+# coeff[2]-c_10
+# coeff[3]-c_11
+# coeff[4]-c_2min2
+# coeff[5]-c_2min1
+# coeff[6]-c_20
+# coeff[7]-c_21
+# coeff[8]-c_22
 
 #Normalized (sum of squares = 1) coeffs of input data
 coeff_normalized=coeff/np.sqrt(norm)
-
-coeff_normalized[0]-c_00_norm
-coeff_normalized[1]-c_1min1_norm
-coeff_normalized[2]-c_10_norm
-coeff_normalized[3]-c_11_norm
-coeff_normalized[4]-c_2min2_norm
-coeff_normalized[5]-c_2min1_norm
-coeff_normalized[6]-c_20_norm
-coeff_normalized[7]-c_21_norm
-coeff_normalized[8]-c_22_norm
-
-
+#
+# coeff_normalized[0]-c_00_norm
+# coeff_normalized[1]-c_1min1_norm
+# coeff_normalized[2]-c_10_norm
+# coeff_normalized[3]-c_11_norm
+# coeff_normalized[4]-c_2min2_norm
+# coeff_normalized[5]-c_2min1_norm
+# coeff_normalized[6]-c_20_norm
+# coeff_normalized[7]-c_21_norm
+# coeff_normalized[8]-c_22_norm
 
 
+#List of orbital names
+sph_harm_names=list() #empty list
+if(maxn>=0):
+    sph_harm_names=['s']
+if(maxn>=1):
+    sph_harm_names.extend(['px','py','pz'])
+if(maxn>=2):
+    sph_harm_names.extend(['dxy','dyz','dz2', 'dxz', 'dx2-y2'])
+if(maxn>=3):
+    sph_harm_names.extend(['fy(3x2-y2)', 'fxyz', 'fyz2', 'fz3', 'fxz2', 'fz(x2-y2)', 'fx(x2-3y2)'])
+if(maxn>=3):
+    sph_harm_names.extend(['gxy(x2-y2)', 'gzy3', 'gz2xy', 'gz3y', 'gz4', 'gz3x', 'gz2(x2-y2)','gzx3','gx4+y4'])
+if(maxn>=4):
+    templist=['higher harmonic']*((maxn+1)**2-25)
+    sph_harm_names.extend(templist)
+
+sph_harm_names
+
+#printing to stdout
+print("{0:19s}  {1:14s}   {2:18s}".format('Spherical Harmonic','Coeff','Coeff (normalized)'))
+for i in range(len(coeff)):
+    #print(sph_harm_names[i]+'     '+str(coeff[i])+'   '+str(coeff_normalized[i]))
+    print("{0:19s} {1: 12.8e}  {1: 12.10e}".format(sph_harm_names[i], coeff[i], coeff_normalized[i]))
 
 
 
@@ -131,101 +152,101 @@ coeff_normalized[8]-c_22_norm
 
 #Defining various spherical harmonics (https://en.wikipedia.org/wiki/Table_of_spherical_harmonics)
 #s
-harm_00=np.array(scp.special.sph_harm(0,0,thetapoints,phipoints))
-harm_00=np.real(harm_00)
-
+# harm_00=np.array(scp.special.sph_harm(0,0,thetapoints,phipoints))
+# harm_00=np.real(harm_00)
+#
 #p
-harm_1min1=complex(0,1)*(1/np.sqrt(2))*np.array(scp.special.sph_harm(-1,1,thetapoints,phipoints)+scp.special.sph_harm(1,1,thetapoints,phipoints)) #1min1=1-1
-harm_10=np.array(scp.special.sph_harm(0,1,thetapoints,phipoints))
-harm_11=(1/np.sqrt(2))*np.array(scp.special.sph_harm(-1,1,thetapoints,phipoints)-scp.special.sph_harm(1,1,thetapoints,phipoints))
-
-harm_1min1=np.real(harm_1min1)
-harm_10=np.real(harm_10)
-harm_11=np.real(harm_11)
-
+# harm_1min1=complex(0,1)*(1/np.sqrt(2))*np.array(scp.special.sph_harm(-1,1,thetapoints,phipoints)+scp.special.sph_harm(1,1,thetapoints,phipoints)) #1min1=1-1
+# harm_10=np.array(scp.special.sph_harm(0,1,thetapoints,phipoints))
+# harm_11=(1/np.sqrt(2))*np.array(scp.special.sph_harm(-1,1,thetapoints,phipoints)-scp.special.sph_harm(1,1,thetapoints,phipoints))
+#
+# harm_1min1=np.real(harm_1min1)
+# harm_10=np.real(harm_10)
+# harm_11=np.real(harm_11)
+#
 #d
-harm_2min2=complex(0,1)*(1/np.sqrt(2))*np.array(scp.special.sph_harm(-2,2,thetapoints,phipoints)-scp.special.sph_harm(2,2,thetapoints,phipoints))
-harm_2min1=complex(0,1)*(1/np.sqrt(2))*np.array(scp.special.sph_harm(-1,2,thetapoints,phipoints)+scp.special.sph_harm(1,2,thetapoints,phipoints))
-harm_20=np.array(scp.special.sph_harm(0,2,thetapoints,phipoints))
-harm_21=(1/np.sqrt(2))*np.array(scp.special.sph_harm(-1,2,thetapoints,phipoints)-scp.special.sph_harm(1,2,thetapoints,phipoints))
-harm_22=(1/np.sqrt(2))*np.array(scp.special.sph_harm(-2,2,thetapoints,phipoints)+scp.special.sph_harm(2,2,thetapoints,phipoints))
-
-harm_2min2=np.real(harm_2min2)
-harm_2min1=np.real(harm_2min1)
-harm_20=np.real(harm_20)
-harm_21=np.real(harm_21)
-harm_22=np.real(harm_22)
-
-
-
-
+# harm_2min2=complex(0,1)*(1/np.sqrt(2))*np.array(scp.special.sph_harm(-2,2,thetapoints,phipoints)-scp.special.sph_harm(2,2,thetapoints,phipoints))
+# harm_2min1=complex(0,1)*(1/np.sqrt(2))*np.array(scp.special.sph_harm(-1,2,thetapoints,phipoints)+scp.special.sph_harm(1,2,thetapoints,phipoints))
+# harm_20=np.array(scp.special.sph_harm(0,2,thetapoints,phipoints))
+# harm_21=(1/np.sqrt(2))*np.array(scp.special.sph_harm(-1,2,thetapoints,phipoints)-scp.special.sph_harm(1,2,thetapoints,phipoints))
+# harm_22=(1/np.sqrt(2))*np.array(scp.special.sph_harm(-2,2,thetapoints,phipoints)+scp.special.sph_harm(2,2,thetapoints,phipoints))
+#
+# harm_2min2=np.real(harm_2min2)
+# harm_2min1=np.real(harm_2min1)
+# harm_20=np.real(harm_20)
+# harm_21=np.real(harm_21)
+# harm_22=np.real(harm_22)
+#
+#
+#
+#
 #norms. We will be dividing the obtained coeffs by the norms as the norms are not exactly zero
 #(tested in sph_integrate.py). The orthogonal ones are pretty orthogonal though, so we do not need to worry about
 #solving a full linear system of equations
 #s----------------------------------------------------------------------------
-tempnorm_00=np.zeros(len_phi)
-for i in range(len_phi):
-    tempnorm_00[i]=scp.integrate.trapz(np.multiply(harm_00[i::len_phi],harm_00[i::len_phi]),thetapoints[::len_phi]) #integrating harm^2 over azimuthal theta
-
-norm_00=scp.integrate.trapz(tempnorm_00*np.sin(phipoints[:len_theta]),phipoints[:len_theta])
-norm_00=-1.0*norm_00 #to account for reverse direction of integration of phi
-
+# tempnorm_00=np.zeros(len_phi)
+# for i in range(len_phi):
+    # tempnorm_00[i]=scp.integrate.trapz(np.multiply(harm_00[i::len_phi],harm_00[i::len_phi]),thetapoints[::len_phi]) #integrating harm^2 over azimuthal theta
+#
+# norm_00=scp.integrate.trapz(tempnorm_00*np.sin(phipoints[:len_theta]),phipoints[:len_theta])
+# norm_00=-1.0*norm_00 #to account for reverse direction of integration of phi
+#
 #p----------------------------------------------------------------------------
-tempnorm_1min1=np.zeros(len_phi)
-for i in range(len_phi):
-    tempnorm_1min1[i]=scp.integrate.trapz(np.multiply(harm_1min1[i::len_phi],harm_1min1[i::len_phi]),thetapoints[::len_phi])
-
-norm_1min1=scp.integrate.trapz(tempnorm_1min1*np.sin(phipoints[:len_theta]),phipoints[:len_theta])
-norm_1min1=-1.0*norm_1min1
-
-tempnorm_10=np.zeros(len_phi)
-for i in range(len_phi):
-    tempnorm_10[i]=scp.integrate.trapz(np.multiply(harm_10[i::len_phi],harm_10[i::len_phi]),thetapoints[::len_phi])
-
-norm_10=scp.integrate.trapz(tempnorm_10*np.sin(phipoints[:len_theta]),phipoints[:len_theta])
-norm_10=-1.0*norm_10
-
-tempnorm_11=np.zeros(len_phi)
-for i in range(len_phi):
-    tempnorm_11[i]=scp.integrate.trapz(np.multiply(harm_11[i::len_phi],harm_11[i::len_phi]),thetapoints[::len_phi])
-norm_11=scp.integrate.trapz(tempnorm_11*np.sin(phipoints[:len_theta]),phipoints[:len_theta])
-norm_11=-1.0*norm_11
-
+# tempnorm_1min1=np.zeros(len_phi)
+# for i in range(len_phi):
+    # tempnorm_1min1[i]=scp.integrate.trapz(np.multiply(harm_1min1[i::len_phi],harm_1min1[i::len_phi]),thetapoints[::len_phi])
+#
+# norm_1min1=scp.integrate.trapz(tempnorm_1min1*np.sin(phipoints[:len_theta]),phipoints[:len_theta])
+# norm_1min1=-1.0*norm_1min1
+#
+# tempnorm_10=np.zeros(len_phi)
+# for i in range(len_phi):
+    # tempnorm_10[i]=scp.integrate.trapz(np.multiply(harm_10[i::len_phi],harm_10[i::len_phi]),thetapoints[::len_phi])
+#
+# norm_10=scp.integrate.trapz(tempnorm_10*np.sin(phipoints[:len_theta]),phipoints[:len_theta])
+# norm_10=-1.0*norm_10
+#
+# tempnorm_11=np.zeros(len_phi)
+# for i in range(len_phi):
+    # tempnorm_11[i]=scp.integrate.trapz(np.multiply(harm_11[i::len_phi],harm_11[i::len_phi]),thetapoints[::len_phi])
+# norm_11=scp.integrate.trapz(tempnorm_11*np.sin(phipoints[:len_theta]),phipoints[:len_theta])
+# norm_11=-1.0*norm_11
+#
 #d----------------------------------------------------------------------------
-tempnorm_2min2=np.zeros(len_phi)
-for i in range(len_phi):
-    tempnorm_2min2[i]=scp.integrate.trapz(np.multiply(harm_2min2[i::len_phi],harm_2min2[i::len_phi]),thetapoints[::len_phi])
-
-norm_2min2=scp.integrate.trapz(tempnorm_2min2*np.sin(phipoints[:len_theta]),phipoints[:len_theta])
-norm_2min2=-1.0*norm_2min2
-
-tempnorm_2min1=np.zeros(len_phi)
-for i in range(len_phi):
-    tempnorm_2min1[i]=scp.integrate.trapz(np.multiply(harm_2min1[i::len_phi],harm_2min1[i::len_phi]),thetapoints[::len_phi])
-norm_2min1=scp.integrate.trapz(tempnorm_2min1*np.sin(phipoints[:len_theta]),phipoints[:len_theta])
-norm_2min1=-1.0*norm_2min1
-
-tempnorm_20=np.zeros(len_phi)
-for i in range(len_phi):
-    tempnorm_20[i]=scp.integrate.trapz(np.multiply(harm_20[i::len_phi],harm_20[i::len_phi]),thetapoints[::len_phi])
-
-norm_20=scp.integrate.trapz(tempnorm_20*np.sin(phipoints[:len_theta]),phipoints[:len_theta])
-norm_20=-1.0*norm_20
-
-tempnorm_21=np.zeros(len_phi)
-for i in range(len_phi):
-    tempnorm_21[i]=scp.integrate.trapz(np.multiply(harm_21[i::len_phi],harm_21[i::len_phi]),thetapoints[::len_phi])
-
-norm_21=scp.integrate.trapz(tempnorm_21*np.sin(phipoints[:len_theta]),phipoints[:len_theta])
-norm_21=-1.0*norm_21
-
-tempnorm_22=np.zeros(len_phi)
-for i in range(len_phi):
-    tempnorm_22[i]=scp.integrate.trapz(np.multiply(harm_22[i::len_phi],harm_22[i::len_phi]),thetapoints[::len_phi])
-
-norm_22=scp.integrate.trapz(tempnorm_22*np.sin(phipoints[:len_theta]),phipoints[:len_theta])
-norm_22=-1.0*norm_22
-
+# tempnorm_2min2=np.zeros(len_phi)
+# for i in range(len_phi):
+    # tempnorm_2min2[i]=scp.integrate.trapz(np.multiply(harm_2min2[i::len_phi],harm_2min2[i::len_phi]),thetapoints[::len_phi])
+#
+# norm_2min2=scp.integrate.trapz(tempnorm_2min2*np.sin(phipoints[:len_theta]),phipoints[:len_theta])
+# norm_2min2=-1.0*norm_2min2
+#
+# tempnorm_2min1=np.zeros(len_phi)
+# for i in range(len_phi):
+    # tempnorm_2min1[i]=scp.integrate.trapz(np.multiply(harm_2min1[i::len_phi],harm_2min1[i::len_phi]),thetapoints[::len_phi])
+# norm_2min1=scp.integrate.trapz(tempnorm_2min1*np.sin(phipoints[:len_theta]),phipoints[:len_theta])
+# norm_2min1=-1.0*norm_2min1
+#
+# tempnorm_20=np.zeros(len_phi)
+# for i in range(len_phi):
+    # tempnorm_20[i]=scp.integrate.trapz(np.multiply(harm_20[i::len_phi],harm_20[i::len_phi]),thetapoints[::len_phi])
+#
+# norm_20=scp.integrate.trapz(tempnorm_20*np.sin(phipoints[:len_theta]),phipoints[:len_theta])
+# norm_20=-1.0*norm_20
+#
+# tempnorm_21=np.zeros(len_phi)
+# for i in range(len_phi):
+    # tempnorm_21[i]=scp.integrate.trapz(np.multiply(harm_21[i::len_phi],harm_21[i::len_phi]),thetapoints[::len_phi])
+#
+# norm_21=scp.integrate.trapz(tempnorm_21*np.sin(phipoints[:len_theta]),phipoints[:len_theta])
+# norm_21=-1.0*norm_21
+#
+# tempnorm_22=np.zeros(len_phi)
+# for i in range(len_phi):
+    # tempnorm_22[i]=scp.integrate.trapz(np.multiply(harm_22[i::len_phi],harm_22[i::len_phi]),thetapoints[::len_phi])
+#
+# norm_22=scp.integrate.trapz(tempnorm_22*np.sin(phipoints[:len_theta]),phipoints[:len_theta])
+# norm_22=-1.0*norm_22
+#
 # norm_00
 # norm_1min1
 # norm_10
@@ -235,104 +256,104 @@ norm_22=-1.0*norm_22
 # norm_20
 # norm_21
 
-
+#
 #coeffs
 #s----------------------------------------------------------------------------
-tempc_00=np.zeros(len_phi)
-for i in range(len_phi):
-    tempc_00[i]=scp.integrate.trapz(np.multiply(harm_00[i::len_phi],value[i::len_phi]),thetapoints[::len_phi])
-
-c_00=scp.integrate.trapz(tempc_00*np.sin(phipoints[:len_theta]),phipoints[:len_theta])
-c_00=-1.0*c_00 #to account for reverse direction of integration of phi
-
+# tempc_00=np.zeros(len_phi)
+# for i in range(len_phi):
+    # tempc_00[i]=scp.integrate.trapz(np.multiply(harm_00[i::len_phi],value[i::len_phi]),thetapoints[::len_phi])
+#
+# c_00=scp.integrate.trapz(tempc_00*np.sin(phipoints[:len_theta]),phipoints[:len_theta])
+# c_00=-1.0*c_00 #to account for reverse direction of integration of phi
+#
 #p----------------------------------------------------------------------------
-tempc_1min1=np.zeros(len_phi)
-for i in range(len_phi):
-    tempc_1min1[i]=scp.integrate.trapz(np.multiply(harm_1min1[i::len_phi],value[i::len_phi]),thetapoints[::len_phi])
-
-c_1min1=scp.integrate.trapz(tempc_1min1*np.sin(phipoints[:len_theta]),phipoints[:len_theta])
-c_1min1=-1.0*c_1min1
-
-tempc_10=np.zeros(len_phi)
-for i in range(len_phi):
-    tempc_10[i]=scp.integrate.trapz(np.multiply(harm_10[i::len_phi],value[i::len_phi]),thetapoints[::len_phi])
-
-c_10=scp.integrate.trapz(tempc_10*np.sin(phipoints[:len_theta]),phipoints[:len_theta])
-c_10=-1.0*c_10
-
-tempc_11=np.zeros(len_phi)
-for i in range(len_phi):
-    tempc_11[i]=scp.integrate.trapz(np.multiply(harm_11[i::len_phi],value[i::len_phi]),thetapoints[::len_phi])
-c_11=scp.integrate.trapz(tempc_11*np.sin(phipoints[:len_theta]),phipoints[:len_theta])
-c_11=-1.0*c_11
-
+# tempc_1min1=np.zeros(len_phi)
+# for i in range(len_phi):
+    # tempc_1min1[i]=scp.integrate.trapz(np.multiply(harm_1min1[i::len_phi],value[i::len_phi]),thetapoints[::len_phi])
+#
+# c_1min1=scp.integrate.trapz(tempc_1min1*np.sin(phipoints[:len_theta]),phipoints[:len_theta])
+# c_1min1=-1.0*c_1min1
+#
+# tempc_10=np.zeros(len_phi)
+# for i in range(len_phi):
+    # tempc_10[i]=scp.integrate.trapz(np.multiply(harm_10[i::len_phi],value[i::len_phi]),thetapoints[::len_phi])
+#
+# c_10=scp.integrate.trapz(tempc_10*np.sin(phipoints[:len_theta]),phipoints[:len_theta])
+# c_10=-1.0*c_10
+#
+# tempc_11=np.zeros(len_phi)
+# for i in range(len_phi):
+    # tempc_11[i]=scp.integrate.trapz(np.multiply(harm_11[i::len_phi],value[i::len_phi]),thetapoints[::len_phi])
+# c_11=scp.integrate.trapz(tempc_11*np.sin(phipoints[:len_theta]),phipoints[:len_theta])
+# c_11=-1.0*c_11
+#
 #d----------------------------------------------------------------------------
-tempc_2min2=np.zeros(len_phi)
-for i in range(len_phi):
-    tempc_2min2[i]=scp.integrate.trapz(np.multiply(harm_2min2[i::len_phi],value[i::len_phi]),thetapoints[::len_phi])
-
-c_2min2=scp.integrate.trapz(tempc_2min2*np.sin(phipoints[:len_theta]),phipoints[:len_theta])
-c_2min2=-1.0*c_2min2
-
-tempc_2min1=np.zeros(len_phi)
-for i in range(len_phi):
-    tempc_2min1[i]=scp.integrate.trapz(np.multiply(harm_2min1[i::len_phi],value[i::len_phi]),thetapoints[::len_phi])
-c_2min1=scp.integrate.trapz(tempc_2min1*np.sin(phipoints[:len_theta]),phipoints[:len_theta])
-c_2min1=-1.0*c_2min1
-
-tempc_20=np.zeros(len_phi)
-for i in range(len_phi):
-    tempc_20[i]=scp.integrate.trapz(np.multiply(harm_20[i::len_phi],value[i::len_phi]),thetapoints[::len_phi])
-
-c_20=scp.integrate.trapz(tempc_20*np.sin(phipoints[:len_theta]),phipoints[:len_theta])
-c_20=-1.0*c_20
-
-tempc_21=np.zeros(len_phi)
-for i in range(len_phi):
-    tempc_21[i]=scp.integrate.trapz(np.multiply(harm_21[i::len_phi],value[i::len_phi]),thetapoints[::len_phi])
-
-c_21=scp.integrate.trapz(tempc_21*np.sin(phipoints[:len_theta]),phipoints[:len_theta])
-c_21=-1.0*c_21
-
-tempc_22=np.zeros(len_phi)
-for i in range(len_phi):
-    tempc_22[i]=scp.integrate.trapz(np.multiply(harm_22[i::len_phi],value[i::len_phi]),thetapoints[::len_phi])
-
-c_22=scp.integrate.trapz(tempc_22*np.sin(phipoints[:len_theta]),phipoints[:len_theta])
-c_22=-1.0*c_22
-
+# tempc_2min2=np.zeros(len_phi)
+# for i in range(len_phi):
+    # tempc_2min2[i]=scp.integrate.trapz(np.multiply(harm_2min2[i::len_phi],value[i::len_phi]),thetapoints[::len_phi])
+#
+# c_2min2=scp.integrate.trapz(tempc_2min2*np.sin(phipoints[:len_theta]),phipoints[:len_theta])
+# c_2min2=-1.0*c_2min2
+#
+# tempc_2min1=np.zeros(len_phi)
+# for i in range(len_phi):
+    # tempc_2min1[i]=scp.integrate.trapz(np.multiply(harm_2min1[i::len_phi],value[i::len_phi]),thetapoints[::len_phi])
+# c_2min1=scp.integrate.trapz(tempc_2min1*np.sin(phipoints[:len_theta]),phipoints[:len_theta])
+# c_2min1=-1.0*c_2min1
+#
+# tempc_20=np.zeros(len_phi)
+# for i in range(len_phi):
+    # tempc_20[i]=scp.integrate.trapz(np.multiply(harm_20[i::len_phi],value[i::len_phi]),thetapoints[::len_phi])
+#
+# c_20=scp.integrate.trapz(tempc_20*np.sin(phipoints[:len_theta]),phipoints[:len_theta])
+# c_20=-1.0*c_20
+#
+# tempc_21=np.zeros(len_phi)
+# for i in range(len_phi):
+    # tempc_21[i]=scp.integrate.trapz(np.multiply(harm_21[i::len_phi],value[i::len_phi]),thetapoints[::len_phi])
+#
+# c_21=scp.integrate.trapz(tempc_21*np.sin(phipoints[:len_theta]),phipoints[:len_theta])
+# c_21=-1.0*c_21
+#
+# tempc_22=np.zeros(len_phi)
+# for i in range(len_phi):
+    # tempc_22[i]=scp.integrate.trapz(np.multiply(harm_22[i::len_phi],value[i::len_phi]),thetapoints[::len_phi])
+#
+# c_22=scp.integrate.trapz(tempc_22*np.sin(phipoints[:len_theta]),phipoints[:len_theta])
+# c_22=-1.0*c_22
+#
 #Dividing all coeffs by the spherical harmonic norms
-c_00=c_00/norm_00
-c_1min1=c_1min1/norm_1min1
-c_10=c_10/norm_10
-c_11=c_11/norm_11
-c_2min2=c_2min2/norm_2min2
-c_2min1=c_2min1/norm_2min1
-c_20=c_20/norm_20
-c_21=c_21/norm_21
-c_22=c_22/norm_22
-
+# c_00=c_00/norm_00
+# c_1min1=c_1min1/norm_1min1
+# c_10=c_10/norm_10
+# c_11=c_11/norm_11
+# c_2min2=c_2min2/norm_2min2
+# c_2min1=c_2min1/norm_2min1
+# c_20=c_20/norm_20
+# c_21=c_21/norm_21
+# c_22=c_22/norm_22
+#
 #Dividing all coeffs by norm of input data
-c_00_norm=c_00/np.sqrt(norm)
-c_1min1_norm=c_1min1/np.sqrt(norm)
-c_10_norm=c_10/np.sqrt(norm)
-c_11_norm=c_11/np.sqrt(norm)
-c_2min2_norm=c_2min2/np.sqrt(norm)
-c_2min1_norm=c_2min1/np.sqrt(norm)
-c_20_norm=c_20/np.sqrt(norm)
-c_21_norm=c_21/np.sqrt(norm)
-c_22_norm=c_22/np.sqrt(norm)
+# c_00_norm=c_00/np.sqrt(norm)
+# c_1min1_norm=c_1min1/np.sqrt(norm)
+# c_10_norm=c_10/np.sqrt(norm)
+# c_11_norm=c_11/np.sqrt(norm)
+# c_2min2_norm=c_2min2/np.sqrt(norm)
+# c_2min1_norm=c_2min1/np.sqrt(norm)
+# c_20_norm=c_20/np.sqrt(norm)
+# c_21_norm=c_21/np.sqrt(norm)
+# c_22_norm=c_22/np.sqrt(norm)
 
 #printing to stdout
-print('s: ' + str(c_00) + " " + str(c_00_norm))
-print('py: ' + str(c_1min1) + " " + str(c_1min1_norm))
-print('pz: ' + str(c_10) + " " + str(c_10_norm))
-print('px: ' + str(c_11) + " " + str(c_11_norm))
-print('dxy: ' + str(c_2min2) + " " + str(c_2min2_norm))
-print('dyz: ' + str(c_2min1) + " " + str(c_2min1_norm))
-print('dz2: ' + str(c_20) + " " + str(c_20_norm))
-print('dxz: ' + str(c_21)+ " " + str(c_21_norm))
-print('dx2-y2: ' + str(c_22) + " " + str(c_22_norm))
+# print('s: ' + str(c_00) + " " + str(c_00_norm))
+# print('py: ' + str(c_1min1) + " " + str(c_1min1_norm))
+# print('pz: ' + str(c_10) + " " + str(c_10_norm))
+# print('px: ' + str(c_11) + " " + str(c_11_norm))
+# print('dxy: ' + str(c_2min2) + " " + str(c_2min2_norm))
+# print('dyz: ' + str(c_2min1) + " " + str(c_2min1_norm))
+# print('dz2: ' + str(c_20) + " " + str(c_20_norm))
+# print('dxz: ' + str(c_21)+ " " + str(c_21_norm))
+
 
 
 #Sorting for integration (with treshold)
