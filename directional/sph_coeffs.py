@@ -79,13 +79,48 @@ sph_norm=np.array(scp.integrate.trapz(tempsph_norm*np.sin(phipoints[:len_theta])
 sph_norm=sph_norm*-1.0
 
 
-#coeffs
+#Vector of coeffs. coeff[i] is the coeff corresponding to spherical harmonic in sph_harm[i]
 tempcoeff=np.zeros(shape=(len(sph_harm),len_phi))
 for i in range(len_phi):
     tempcoeff[:,i]=scp.integrate.trapz(np.multiply(sph_harm[:,i::len_phi],value[i::len_phi]),thetapoints[::len_phi]) #integrating over azimuthal theta
 
 coeff=np.array(scp.integrate.trapz(tempcoeff*np.sin(phipoints[:len_theta]),phipoints[:len_theta]))
 coeff=coeff*-1.0
+
+#Dividing all coeffs by the  respective spherical harmonic norms
+coeff=np.divide(coeff,sph_norm)
+
+coeff[0]-c_00
+coeff[1]-c_1min1
+coeff[2]-c_10
+coeff[3]-c_11
+coeff[4]-c_2min2
+coeff[5]-c_2min1
+coeff[6]-c_20
+coeff[7]-c_21
+coeff[8]-c_22
+
+#Normalized (sum of squares = 1) coeffs of input data
+coeff_normalized=coeff/np.sqrt(norm)
+
+coeff_normalized[0]-c_00_norm
+coeff_normalized[1]-c_1min1_norm
+coeff_normalized[2]-c_10_norm
+coeff_normalized[3]-c_11_norm
+coeff_normalized[4]-c_2min2_norm
+coeff_normalized[5]-c_2min1_norm
+coeff_normalized[6]-c_20_norm
+coeff_normalized[7]-c_21_norm
+coeff_normalized[8]-c_22_norm
+
+
+
+
+
+
+
+
+
 
 
 
