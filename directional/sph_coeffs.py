@@ -67,7 +67,10 @@ for i in range(maxn+1):
         sph_harm[counter]=np.array(realharm(j,i,thetapoints,phipoints))
         counter=counter+1
 
-#norm
+#Vector of norms. norm[i] 0 norm of sph_harm[i].
+#We will be dividing the obtained coeffs by the norms as the norms are not exactly zero
+#(tested in sph_integrate.py). The orthogonal ones are pretty orthogonal though, so we do not need to worry about
+#solving a full linear system of equations
 tempsph_norm=np.zeros(shape=(len(sph_harm),len_phi))
 for i in range(len_phi):
     tempsph_norm[:,i]=scp.integrate.trapz(np.multiply(sph_harm[:,i::len_phi],sph_harm[:,i::len_phi]),thetapoints[::len_phi]) #integrating over azimuthal theta
@@ -76,6 +79,13 @@ sph_norm=np.array(scp.integrate.trapz(tempsph_norm*np.sin(phipoints[:len_theta])
 sph_norm=sph_norm*-1.0
 
 
+#coeffs
+tempcoeff=np.zeros(shape=(len(sph_harm),len_phi))
+for i in range(len_phi):
+    tempcoeff[:,i]=scp.integrate.trapz(np.multiply(sph_harm[:,i::len_phi],value[i::len_phi]),thetapoints[::len_phi]) #integrating over azimuthal theta
+
+coeff=np.array(scp.integrate.trapz(tempcoeff*np.sin(phipoints[:len_theta]),phipoints[:len_theta]))
+coeff=coeff*-1.0
 
 
 
