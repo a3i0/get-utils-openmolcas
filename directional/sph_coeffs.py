@@ -97,6 +97,16 @@ coeff=np.divide(coeff,sph_norm)
 #Normalized (sum of squares = 1) coeffs of input data
 coeff_normalized=coeff/np.sqrt(norm)
 
+#Reduced rotatory strength values (only valid for s and d)
+# A=0.25*np.sqrt(15/np.pi) #constant before angular terms of all d except dz2
+# B=0.5*np.sqrt(1/np.pi) #constant before angular terms of s
+# R_iso=coeff[0]*B
+# if(maxn>=2):
+    # R_xy=coeff[4]*A
+    # R_yz=coeff[5]*A
+    # R_xz=coeff[7]*A
+    # R_xx__Ryyby2=coeff[8]*A
+    # twoR_zz__R_xx__R_yyby6=coeff[6]*np.sqrt(3)*A
 
 #List of orbital names
 sph_harm_names=list() #empty list
@@ -114,7 +124,6 @@ if(maxn>=4):
     templist=['higher harmonic']*((maxn+1)**2-25)
     sph_harm_names.extend(templist)
 
-sph_harm_names
 
 #printing to stdout
 print("{0:19s}  {1:14s}   {2:18s}".format('Spherical Harmonic','Coeff','Coeff (normalized)'))
