@@ -23,7 +23,7 @@ Syntax: python getdirections.py <grid size>
 
 Output: Generates two files:\
 * 'directions_sph.inp' with azimuthal angle $\theta$ in the range $[0,2\pi]$ and geographic polar angles $\phi$ in the range $[-\pi/2,\pi/2]$.\
-   Format: If $\{\theta}$ is an array of ordered (in ascending) of $\theta$ values and $\overrightarrow{\phi}$ is the corresponding array for $\phi,\
+   Format: If $\theta$ is an array of ordered (in ascending) of $\theta$ values and $\vec{phi}$ is the corresponding array for $\phi$,\
    $\vec{\theta}\bigotimes\mathbb{I}$  $\mathbb{I}\bigotimes\vec{\phi}$
 
 * 'directions_cart.inp' with the corresponding cartesian coordinate, using a geographical system for the polar angle $\phi$
