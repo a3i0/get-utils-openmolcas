@@ -1,6 +1,6 @@
 #Input: Files loaded by loadtxt: input .raw file with directional data (created by getmoments.py) and 'directions_sph.inp'. Make sure these correspond.
 #       Maximum n value of spherical harmonic Y_{n}^{m}
-#Output: formatted coefficients of directional data in dir-velmoments.raw
+#Output: formatted coefficients of directional data in dir-velmoments.raw up to maximun n value specified
 #Syntax: python3 sph_coeffs.py <.raw file>  <maxn>
 
 import numpy as np
