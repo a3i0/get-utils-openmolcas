@@ -102,7 +102,7 @@ osc_str_fullop=fulloposc[ri-1,rf-1] #unitless
 file=open("tmoments.dat","w")
 file.writelines(["Rotatory strengths (mixed): ", str(rot_str), " (a.u) ", str(rot_str_cgs), " (cgs) ", "\n"])
 file.writelines(["Rotatory strengths (velocity): ", str(rot_str_vel), " (a.u) ", str(rot_str_vel_cgs), " (cgs) ", "\n"])
-file.writelines(["Rotatory strengths (fulloperator):", str(rot_str_fullop), " (a.u) " , str(rot_str_fullop_cgs), " (cgs)", "\n"])
+file.writelines(["Rotatory strengths (fulloperator): ", str(rot_str_fullop), " (a.u) " , str(rot_str_fullop_cgs), " (cgs)", "\n"])
 file.writelines(["Oscillator strength (length): " , str(osc_str_len), "\n"])
 file.writelines(["Oscillator strength (velocity): " , str(osc_str_vel), "\n"])
 file.writelines(["Oscillator strength (fulloperator): ", str(osc_str_fullop), "\n"])
