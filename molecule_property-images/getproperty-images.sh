@@ -12,3 +12,5 @@ grep -i 'dipole moment' tmoments.dat | grep -i 'velocity'| cut -d ':' -f 2 | awk
 grep -i 'magnetic moment' tmoments.dat | cut -d ':' -f 2 | awk '{print $1 " " $2 " " $3}' > mag_value.raw
 
 python3 $SCRIPTS_DIR/getproperty-images.py $1
+
+rm dip_len_value.raw dip_vel_value.raw mag_value.raw
