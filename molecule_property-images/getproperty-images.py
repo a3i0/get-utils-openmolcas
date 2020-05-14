@@ -30,6 +30,13 @@ data=pipeline.compute()
 
 
 #render image
-vp = Viewport(type=Viewport.Type.Ortho)
-vp.zoom_all()
+vp = Viewport()
+vp.type = Viewport.Type.Ortho
+vp.camera_up=(1,0,0)
+vp.camera_dir = (1, -1, -0.15)
+
+vp.zoom_all() #note that this resets camera_pos but not camera_dir
+
+
+#vp.render_image(filename='output.png',size=(1280,720), alpha=True, renderer=OpenGLRenderer())
 vp.render_image(filename='output.png',size=(1280,720), renderer=OpenGLRenderer())
