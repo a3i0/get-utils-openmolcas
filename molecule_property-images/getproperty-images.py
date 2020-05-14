@@ -1,5 +1,5 @@
 from ovito.io import import_file
-from ovito.vis import Viewport, OpenGLRenderer, BondsVis
+from ovito.vis import Viewport, OpenGLRenderer, OSPRayRenderer
 from ovito_user_modifier_VisualiseMoments import VisualiseMoments
 from ovito_user_modifier_CreateGoodBonds import CreateCCbonds, CreateCHbonds, CreateDoublebonds, good_ballandstick
 
@@ -34,9 +34,11 @@ vp = Viewport()
 vp.type = Viewport.Type.Ortho
 vp.camera_up=(1,0,0)
 vp.camera_dir = (1, -1, -0.15)
-
 vp.zoom_all() #note that this resets camera_pos but not camera_dir
 
+osp=OSPRayRenderer()
+osp.max_ray_recursion=4
 
 #vp.render_image(filename='output.png',size=(1280,720), alpha=True, renderer=OpenGLRenderer())
-vp.render_image(filename='output.png',size=(1280,720), renderer=OpenGLRenderer())
+#vp.render_image(filename='output.png',size=(1280,720), renderer=OpenGLRenderer()) #opengl without transparency
+vp.render_image(filename='output.png',size=(1280,720), alpha=true, renderer=osp) #Raytraced OSPRayRenderer
