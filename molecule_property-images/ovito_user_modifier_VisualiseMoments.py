@@ -1,10 +1,22 @@
 #Uses global variables dip_len_value, dip_vel_value and mag_value to create vectors and their visual elements at the centre of mass of
 #particles contained in data
+#Input: dip_len_value.raw, dip_vel_value.raw, mag_value.raw
+#Requirements: ovito modukle for python and ovito pro installed
 
 from ovito.data import *
 from ovito.vis import VectorVis
 from ovito.vis import ParticlesVis
 import numpy as np
+
+dip_len_value=np.loadtxt('dip_len_value.raw')
+dip_vel_value=np.loadtxt('dip_vel_value.raw')
+mag_value=np.loadtxt('mag_value.raw')
+
+#scaling all values so that their norms are 2.
+dip_len_value= (np.sqrt(2)/np.linalg.norm(dip_len_value))*dip_len_value
+dip_vel_value= (np.sqrt(2)/np.linalg.norm(dip_vel_value))*dip_vel_value
+mag_value= (np.sqrt(2)/np.linalg.norm(mag_value))*mag_value
+
 
 dip_len_vis = VectorVis( #vector visual element that needs to be attached to the relevant property
     alignment = VectorVis.Alignment.Base,

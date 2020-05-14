@@ -1,7 +1,8 @@
-#Input: dip_len_value.raw, dip_vel_value.raw, mag_value.raw, xyz_file.xyz coordinates of particles
+#Input: xyz_file.xyz coordinates of particles
 #Output: xyz_file.png rendered with vectors specified by .raw input files. Vectors scaled to have norm 2.
-#Requirements: Python module ovito and ovito installed on system.
+#Requirements: Python module ovito and ovito pro installed on system.
 #              OpenGL rendered requires graphics card, so may not work on remote servers.
+#              ovito_user_modifier_VisualiseMoments.py and ovito_user_modifier_CreateGoodBonds.py
 #Syntax: python3 getproperty-images.py xyz_file.xyz
 
 from ovito.io import import_file
@@ -13,15 +14,6 @@ import os
 import sys
 import numpy as np
 
-
-dip_len_value=np.loadtxt('dip_len_value.raw')
-dip_vel_value=np.loadtxt('dip_vel_value.raw')
-mag_value=np.loadtxt('mag_value.raw')
-
-#scaling all values so that their norms are 2.
-dip_len_value= (np.sqrt(2)/np.linalg.norm(dip_len_value))*dip_len_value
-dip_vel_value= (np.sqrt(2)/np.linalg.norm(dip_vel_value))*dip_vel_value
-mag_value= (np.sqrt(2)/np.linalg.norm(mag_value))*mag_value
 
 #modifier for removing simulation cell
 def remove_cell(frame,data):
@@ -38,7 +30,7 @@ pipeline.modifiers.append(CreateDoublebonds())
 pipeline.modifiers.append(CreateCCbonds())
 pipeline.modifiers.append(CreateCHbonds())
 pipeline.modifiers.append(good_ballandstick)
-#pipeline.modifiers.append(VisualiseMoments)
+pipeline.modifiers.append(VisualiseMoments)
 
 #add pipeline to visual scene
 pipeline.add_to_scene()
