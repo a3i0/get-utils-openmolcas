@@ -1,3 +1,6 @@
+#Uses global variables dip_len_value, dip_vel_value and mag_value to create vectors and their visual elements at the centre of mass of
+#particles contained in data
+
 from ovito.data import *
 from ovito.vis import VectorVis
 from ovito.vis import ParticlesVis
@@ -20,6 +23,10 @@ mag_vis = VectorVis(
 
 def VisualiseMoments(frame, data):
 
+    global dip_len_value
+    global dip_vel_value
+    global mag_value
+
     pos=np.array(data.particles['Position'])
     com=sum(pos)/data.particles.count #centre of mass
     com_repeated=np.tensordot(np.ones(data.particles.count),com,axes=0) #formatting so that the array passed to create_property is of correct dimensions '(Nx3)'
@@ -32,18 +39,18 @@ def VisualiseMoments(frame, data):
 
     #Adding Dipole in Length gauge
     dip_len=np.zeros(shape=(data.particles.count,3))
-    dip_len[com_as_particle_index]=[3,0,0] #value of the dipole that will be rendered only at the com particle
+    dip_len[com_as_particle_index]=dip_len_value #value of the dipole that will be rendered only at the com particle
     dip_len_prop = data.particles_.create_property('Dipole Length Gauge', data=dip_len, components=3)
     dip_len_prop.vis = dip_len_vis
 
     #Adding Dipole in Velocity gauge
     dip_vel=np.zeros(shape=(data.particles.count,3))
-    dip_vel[com_as_particle_index]=[0,3,0]
+    dip_vel[com_as_particle_index]=dip_vel_value
     dip_vel_prop = data.particles_.create_property('Dipole Velocity Gauge', data=dip_vel, components=3)
     dip_vel_prop.vis = dip_vel_vis
 
     #Adding magnetic dipole
     mag=np.zeros(shape=(data.particles.count,3))
-    mag[com_as_particle_index]=[0,0,3]
+    mag[com_as_particle_index]=mag_value
     mag_prop = data.particles_.create_property('Magnetic Dipole', data=mag, components=3)
     mag_prop.vis = mag_vis
