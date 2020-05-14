@@ -6,14 +6,16 @@ from ovito_user_modifier_CreateGoodBonds import CreateCCbonds, CreateCHbonds, Cr
 
 import numpy as np
 
+#modifier for removing simulation cell
+def remove_cell(frame,data):
+    data.cell.vis.enabled=False
 
 # Import a file. This creates a Pipeline object.
 pipeline=import_file('Mol3-s0-b3lyp-aug-cc-pvdz-optim.Opt.xyz')
 
-#Remove simulation cell
-# data.cell.vis.enabled=False
 
 # Insert modifiers that operates on the data:
+pipeline.modifiers.append(remove_cell)
 pipeline.modifiers.append(CreateDoublebonds())
 pipeline.modifiers.append(CreateCCbonds())
 pipeline.modifiers.append(CreateCHbonds())
