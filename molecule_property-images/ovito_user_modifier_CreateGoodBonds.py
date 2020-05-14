@@ -15,7 +15,7 @@ Bond2 = BondType(
     color=(0.3,0.3,0.4)
 )
 
-def CreateCHbonds():
+def CreateCHbonds(): #returns a modifier
     create_CHbonds=CreateBondsModifier(mode=CreateBondsModifier.Mode.Pairwise)
     create_CHbonds.set_pairwise_cutoff('C','H',1.2)
     create_CHbonds.bond_type=Bond1

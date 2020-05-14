@@ -8,12 +8,12 @@ dip_len_vis = VectorVis( #vector visual element that needs to be attached to the
     color = (1.0, 0.0, 0.0),
     width = 0.05 )
 
-dip_vel_vis = VectorVis( #vector visual element that needs to be attached to the relevant property
+dip_vel_vis = VectorVis(
     alignment = VectorVis.Alignment.Base,
     color = (0.9, 0.4, 0.0),
     width = 0.05 )
 
-mag_vis = VectorVis( #vector visual element that needs to be attached to the relevant property
+mag_vis = VectorVis(
     alignment = VectorVis.Alignment.Base,
     color = (0.0, 0.0, 1.0),
     width = 0.05 )
@@ -38,12 +38,12 @@ def VisualiseMoments(frame, data):
 
     #Adding Dipole in Velocity gauge
     dip_vel=np.zeros(shape=(data.particles.count,3))
-    dip_vel[com_as_particle_index]=[0,3,0] #value of the dipole that will be rendered only at the com particle
+    dip_vel[com_as_particle_index]=[0,3,0]
     dip_vel_prop = data.particles_.create_property('Dipole Velocity Gauge', data=dip_vel, components=3)
     dip_vel_prop.vis = dip_vel_vis
 
     #Adding magnetic dipole
     mag=np.zeros(shape=(data.particles.count,3))
-    mag[com_as_particle_index]=[0,0,3] #value of the dipole that will be rendered only at the com particle
+    mag[com_as_particle_index]=[0,0,3]
     mag_prop = data.particles_.create_property('Magnetic Dipole', data=mag, components=3)
     mag_prop.vis = mag_vis
