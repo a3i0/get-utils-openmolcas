@@ -23,7 +23,7 @@ def good_ballandstick(frame,data):
 
     #data.particles.bonds.vis.enabled = True
     #data.particles.bonds.vis.shading = BondsVis.Shading.Flat
-    #data.particles.bonds.vis.width = 0.2
+    data.particles.bonds.vis.width = 0.2
     # print(data.particles_.bonds_.bond_types_.type_by_id(2).color)
 
 # Import a file. This creates a Pipeline object.
@@ -33,12 +33,12 @@ pipeline=import_file('Mol3-s0-b3lyp-aug-cc-pvdz-optim.Opt.xyz')
 Bond1 = BondType(
     id=2,
     name='single',
-    color=(0.2,0.2,0.2)
+    color=(0.85,0.85,0.85)
 )
 Bond2 = BondType(
     id=1,
     name='double',
-    color=(1.0,0.0,0.0)
+    color=(0.3,0.3,0.4)
 )
 
 create_CHbonds=CreateBondsModifier(mode=CreateBondsModifier.Mode.Pairwise)
@@ -56,8 +56,8 @@ create_doublebonds.bond_type=Bond2
 create_CHbonds.vis.use_particle_colors=False
 create_CHbonds.vis.use_particle_colors=False
 create_doublebonds.vis.use_particle_colors=False
-create_CHbonds.vis.width=0.1
-create_doublebonds.vis.width=0.3
+# create_CHbonds.vis.width=0.1
+# create_doublebonds.vis.width=0.3
 
 # Insert a modifiers that operates on the data:
 pipeline.modifiers.append(create_doublebonds)
