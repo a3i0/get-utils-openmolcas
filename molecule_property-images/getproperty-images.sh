@@ -3,14 +3,21 @@
 #Input: xyz_file, tmoments.dat
 #Output: dip_len_value.raw, dip_vel_value.raw, mag_value.raw
 #Requirements: getproperty-images.py
-#Syntax: getproperty-images.sh xyz_file.xyz
+#Syntax: getproperty-images.sh xyz_file.xyz -r rendering method
 
 SCRIPTS_DIR=$(dirname $0)
+renderer=opengl #default renderer
+while getopts ":r:" arg; do
+  case $arg in
+    r) renderer=$OPTARG
+  esac
+done
+
 
 grep -i 'dipole moment' tmoments.dat | grep -i 'length'| cut -d ':' -f 2 | awk '{print $1 " "  $2 " " $3}' > dip_len_value.raw
 grep -i 'dipole moment' tmoments.dat | grep -i 'velocity'| cut -d ':' -f 2 | awk '{print $1 " "$2 " " $3}' > dip_vel_value.raw
 grep -i 'magnetic moment' tmoments.dat | cut -d ':' -f 2 | awk '{print $1 " " $2 " " $3}' > mag_value.raw
 
-python3 $SCRIPTS_DIR/getproperty-images.py $1
+python3 $SCRIPTS_DIR/getproperty-images.py $1 $method
 
 rm dip_len_value.raw dip_vel_value.raw mag_value.raw

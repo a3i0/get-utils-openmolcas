@@ -1,9 +1,9 @@
-#Input: xyz_file.xyz coordinates of particles
+#Input: xyz_file.xyz coordinates of particles, rendering method: allowed=opengl and ospray
 #Output: xyz_file.png rendered with vectors specified by .raw input files. Vectors scaled to have norm 2.
 #Requirements: Python module ovito and ovito pro installed on system.
 #              OpenGL rendered requires graphics card, so may not work on remote servers.
 #              ovito_user_modifier_VisualiseMoments.py and ovito_user_modifier_CreateGoodBonds.py
-#Syntax: python3 getproperty-images.py xyz_file.xyz
+#Syntax: python3 getproperty-images.py xyz_file.xyz <rendering method>
 
 from ovito.io import import_file
 from ovito.vis import Viewport, OpenGLRenderer, OSPRayRenderer
@@ -13,6 +13,8 @@ from ovito_user_modifier_CreateGoodBonds import CreateCCbonds, CreateCHbonds, Cr
 import os
 import sys
 import numpy as np
+
+renderer=sys.argv[1]
 
 
 #modifier for removing simulation cell
@@ -50,6 +52,8 @@ osp=OSPRayRenderer()
 osp.max_ray_recursion=4
 
 png_file=xyz_file.replace(".xyz" , ".png" )
-#vp.render_image(filename='output.png',size=(1280,720), alpha=True, renderer=OpenGLRenderer())
-vp.render_image(filename=png_file,size=(1280,720), renderer=OpenGLRenderer()) #opengl without transparency
-#vp.render_image(filename='output.png',size=(1280,720), alpha=true, renderer=osp) #Raytraced OSPRayRenderer
+if (render=='opengl'):
+    vp.render_image(filename=png_file,size=(1280,720), alpha=True, renderer=OpenGLRenderer())
+
+if(renderer=='ospray'):
+    vp.render_image(filename=png_file,size=(1280,720), alpha=False, renderer=osp)
