@@ -57,7 +57,7 @@ dip_str_len_cgs=dip_str_len*64591e-40
 dip_str_vel=abs(np.dot(v,v))
 dip_str_vel_cgs=dip_str_vel*64591e-40
 mag_str=abs(np.dot(m,m))
-m_cgs=m*1.85480e-23/(3.33564e-14)
+m_cgs=m*1.85480e-23*(3.33564e-14)
 mag_str_cgs=abs(np.dot(m_cgs,m_cgs)) #units taken from Wikipedia (https://en.wikipedia.org/wiki/Hartree_atomic_units and https://en.wikipedia.org/wiki/Magnetic_moment#Units)
 #angle between dipole and magnetic vectors
 theta_len=np.arccos(rot_str/(np.sqrt(dip_str_len*mag_str)))
