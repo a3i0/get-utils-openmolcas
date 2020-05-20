@@ -1,4 +1,4 @@
-#v2.1
+#v3.0
 #Input: RASSI State energies, Dipole, velocity and angular momentum components, full operator oscillator and rotatory strengths, number of roots, intial and final roots
 #Output: Rot strength in mixed, veocity and for full operator, dipole strength in length, osc strength in velociy and full operator. Excitaion energy. All for specified roots
 #        in a file tmoments.dat
@@ -42,26 +42,33 @@ l=np.array(l)
 v=np.array(v)
 m=-1.0*-1.0*0.5*l #corrected sign to take mfi instead of mif
 
-#rotatory strengths in mixed
-rot_str=np.dot(u,m)
-rot_str_cgs=rot_str*471.44e-40
-#rotatory strength in velocity
-if (ri ==rf):
-    rot_str_vel=0
+dip_len=u
+dip_vel=-1*v/E1
+mag=m
 
-rot_str_vel=-1*np.dot(v,m)/E1
-rot_str_vel_cgs=rot_str_vel*471.44e-40
-#dipole and magnetic strengths and moments
-dip_str_len=abs(np.dot(u,u))
-dip_str_len_cgs=dip_str_len*64591e-40
-dip_str_vel=abs(np.dot(v,v))
-dip_str_vel_cgs=dip_str_vel*64591e-40
-mag_str=abs(np.dot(m,m))
-m_cgs=m*1.85480e-23*(3.33564e-14)
-mag_str_cgs=abs(np.dot(m_cgs,m_cgs)) #units taken from Wikipedia (https://en.wikipedia.org/wiki/Hartree_atomic_units and https://en.wikipedia.org/wiki/Magnetic_moment#Units)
+#Note: Converting to Gaussian-cgs units (https://archive.org/details/encyclopaediaofs0000card/mode/2up)
+dip_len_cgs=dip_len*2.541746473e-18
+dip_vel_cgs=dip_vel*2.541746473e-18
+mag_cgs=mag*1.854802016e-20
+
+#Rotatory strengths
+rot_str_mix=np.dot(dip_len,mag)
+rot_str_vel=np.dot(dip_vel,mag)
+rot_str_mix_cgs=np.dot(dip_len_cgs,mag_cgs) #This is indeed the correct formula even in gaussian units. Consistent with literature.
+rot_str_vel_cgs=np.dot(dip_vel_cgs,mag_cgs)
+
+#dipole and magnetic strengths
+dip_str_len=abs(np.dot(dip_len,dip_len))
+dip_str_len_cgs=abs(np.dot(dip_len_cgs,dip_len_cgs))
+dip_str_vel=abs(np.dot(dip_vel,dip_vel))
+dip_str_vel_cgs=abs(np.dot(dip_vel_cgs,dip_vel_cgs))
+mag_str=abs(np.dot(mag,mag))
+mag_str_cgs=abs(np.dot(mag_cgs,mag_cgs)) #units taken from Wikipedia (https://en.wikipedia.org/wiki/Hartree_atomic_units and https://en.wikipedia.org/wiki/Magnetic_moment#Units)
+
+
 #angle between dipole and magnetic vectors
-theta_len=np.arccos(rot_str/(np.sqrt(dip_str_len*mag_str)))
-theta_vel=np.arccos(np.dot(v,m)/(np.sqrt(dip_str_vel*mag_str)))
+theta_len=np.arccos(np.dot(dip_len,mag)/(np.sqrt(dip_str_len*mag_str)))
+theta_vel=np.arccos(np.dot(dip_vel,mag)/(np.sqrt(dip_str_vel*mag_str)))
 theta_len_degrees=theta_len*180.0/np.pi
 theta_vel_degrees=theta_vel*180.0/np.pi
 
@@ -70,7 +77,7 @@ if (ri == rf):
     osc_str_vel=0
     osc_str_len=0
 
-osc_str_vel=2.0*dip_str_vel/(3.0*E1)
+osc_str_vel=2.0*dip_str_vel*E1/(3.0)
 osc_str_len=2.0*dip_str_len*E1/(3.0)
 
 #full operator moments
@@ -91,8 +98,8 @@ for i in range(len(fullopdata)):
 
 fulloprot=fulloprot*-1.0 #sign correction
 
-rot_str_fullop=fulloprot[ri-1,rf-1]*1.967e-3 #converting from reduced rot str to atomic units
-rot_str_fullop_cgs=rot_str_fullop*471.44e-40 #converting from a.u to cgs
+rot_str_fullop=fulloprot[ri-1,rf-1]*1.967151348e-3 #converting from reduced rot str to atomic units
+rot_str_fullop_cgs=rot_str_fullop*2.541746473e-18*1.854802016e-20 #converting from a.u to cgs
 osc_str_fullop=fulloposc[ri-1,rf-1] #unitless
 
 #osdata=np.loadtxt("ostr_raw.dat")
@@ -100,7 +107,7 @@ osc_str_fullop=fulloposc[ri-1,rf-1] #unitless
 #osc_strength_vel=osdata[1,2]
 
 file=open("tmoments.dat","w")
-file.writelines(["Rotatory strengths (mixed): ", str(rot_str), " (a.u) ", str(rot_str_cgs), " (cgs) ", "\n"])
+file.writelines(["Rotatory strengths (mixed): ", str(rot_str_mix), " (a.u) ", str(rot_str_mix_cgs), " (cgs) ", "\n"])
 file.writelines(["Rotatory strengths (velocity): ", str(rot_str_vel), " (a.u) ", str(rot_str_vel_cgs), " (cgs) ", "\n"])
 file.writelines(["Rotatory strengths (fulloperator): ", str(rot_str_fullop), " (a.u) " , str(rot_str_fullop_cgs), " (cgs)", "\n"])
 file.writelines(["Oscillator strength (length): " , str(osc_str_len), "\n"])
@@ -108,10 +115,10 @@ file.writelines(["Oscillator strength (velocity): " , str(osc_str_vel), "\n"])
 file.writelines(["Oscillator strength (fulloperator): ", str(osc_str_fullop), "\n"])
 file.writelines(["Dipole strengths (length): ", str(dip_str_len), " (a.u) ", str(dip_str_len_cgs), " (cgs) ", "\n"])
 file.writelines(["Dipole strengths (velocity): ", str(dip_str_vel), " (a.u) ", str(dip_str_vel_cgs), " (cgs) ", "\n"])
-file.writelines(["Dipole moment (length,vector): ", str(u[0]), " ", str(u[1]), " ", str(u[2]), " (a.u) ", "\n" ])
-file.writelines(["Dipole moment (velocity,vector): ", str(v[0]), " ", str(v[1]), " ", str(v[2]), " (a.u) ", "\n" ])
+file.writelines(["Dipole moment (length,vector): ", str(dip_len[0]), " ", str(dip_len[1]), " ", str(dip_len[2]), " (a.u) ", "\n" ])
+file.writelines(["Dipole moment (velocity,vector): ", str(dip_vel[0]), " ", str(dip_vel[1]), " ", str(dip_vel[2]), " (a.u) ", "\n" ])
 file.writelines(["Magnetic strengths (magnitude): ", str(mag_str), " (a.u) ", str(mag_str_cgs), " (cgs) ", "\n"])
-file.writelines(["Magnetic moment (vector): ", str(m[0]), " ", str(m[1]), " ", str(m[2]), "\n"])
+file.writelines(["Magnetic moment (vector): ", str(mag[0]), " ", str(mag[1]), " ", str(mag[2]), "\n"])
 file.writelines(["dipole-magnetic angles (length): ", str(theta_len), " (radians) ",  str(theta_len_degrees), " (degrees) ", "\n"])
 file.writelines(["dipole-magnetic angles (velocity): ", str(theta_vel), " (radians) ",  str(theta_vel_degrees), " (degrees) ", "\n"])
 file.writelines(["Excitation Energy (vertical): ", str(E1), " (a.u) ", str(E1_ev), " (eV) ", "\n"])
