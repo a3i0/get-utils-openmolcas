@@ -15,6 +15,9 @@ import sys
 import numpy as np
 
 renderer=sys.argv[2]
+camera_dir_x=float(sys.argv[3])
+camera_dir_y=float(sys.argv[4])
+camera_dir_z=float(sys.argv[5])
 
 
 #modifier for removing simulation cell
@@ -45,7 +48,7 @@ data=pipeline.compute()
 vp = Viewport()
 vp.type = Viewport.Type.Ortho
 vp.camera_up=(1,0,0)
-vp.camera_dir = (1, -1, -0.15)
+vp.camera_dir = (camera_dir_x, camera_dir_y, camera_dir_z)
 vp.zoom_all() #note that this resets camera_pos but not camera_dir
 
 osp=OSPRayRenderer()
