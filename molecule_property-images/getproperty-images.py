@@ -59,7 +59,7 @@ if((renderer != "opengl")and(renderer != "ospray")):
 
 png_file=xyz_file.replace(".xyz" , ".png" )
 if (renderer=="opengl"):
-    vp.render_image(filename=png_file,size=(1280,720), alpha=True, renderer=OpenGLRenderer())
+    vp.render_image(filename=png_file,size=(800,600), alpha=True, renderer=OpenGLRenderer())
 
 if(renderer=="ospray"):
-    vp.render_image(filename=png_file,size=(1280,720), alpha=False, renderer=osp)
+    vp.render_image(filename=png_file,size=(800,600), alpha=False, renderer=osp)
