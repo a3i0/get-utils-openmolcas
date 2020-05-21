@@ -14,7 +14,7 @@ import os
 import sys
 import numpy as np
 
-renderer=sys.argv[1]
+renderer=sys.argv[2]
 
 
 #modifier for removing simulation cell
@@ -51,9 +51,12 @@ vp.zoom_all() #note that this resets camera_pos but not camera_dir
 osp=OSPRayRenderer()
 osp.max_ray_recursion=4
 
+if((renderer != "opengl")and(renderer != "ospray")):
+    print("Renderer not supported! New image will not be rendered")
+
 png_file=xyz_file.replace(".xyz" , ".png" )
-if (render=='opengl'):
+if (renderer=="opengl"):
     vp.render_image(filename=png_file,size=(1280,720), alpha=True, renderer=OpenGLRenderer())
 
-if(renderer=='ospray'):
+if(renderer=="ospray"):
     vp.render_image(filename=png_file,size=(1280,720), alpha=False, renderer=osp)

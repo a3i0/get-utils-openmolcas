@@ -13,26 +13,33 @@ dip_len_value=np.loadtxt('dip_len_value.raw')
 dip_vel_value=np.loadtxt('dip_vel_value.raw')
 mag_value=np.loadtxt('mag_value.raw')
 
+#Scale all to have norm sqrt(3)
+mag_scaling=np.sqrt(3)/norm(mag_value)
+dip_len_scaling=np.sqrt(3)/norm(dip_len_value)
+dip_vel_scaling=np.sqrt(3)/norm(dip_vel_value)
+
+
 #relative logarithmic scaling scaling so that magnetic moment has norm 2 and the others are sclaed according to how
 # much their order of magnitude differs from magnetic moment.
-mag_value= (2/norm(mag_value))*mag_value
-
-power_diff_len=np.log10(norm(mag_value)) - np.log10(norm(dip_len_value))
-if(power_diff_len >= 1):
-    dip_len_scaling=(1/power_diff_len)*(norm(mag_value)/norm(dip_len_value))
-if(power_diff_len < 1 and power_diff_len > -1):
-    dip_len_scaling=(norm(mag_value)/norm(dip_len_value))
-if(power_diff_len <= -1):
-    dip_len_scaling=np.abs((power_diff_len))*(norm(mag_value)/norm(dip_len_value))
-
-power_diff_vel=np.log10(norm(mag_value)) - np.log10(norm(dip_vel_value))
-if(power_diff_vel >= 1):
-    dip_vel_scaling=(1/power_diff_vel)*(norm(mag_value)/norm(dip_vel_value))
-if(power_diff_vel < 1 and power_diff_vel > -1):
-    dip_vel_scaling=(norm(mag_value)/norm(dip_vel_value))
-if(power_diff_vel <= -1):
-    dip_vel_scaling=np.abs((power_diff_vel))*(norm(mag_value)/norm(dip_vel_value))
-
+# mag_value= (2/norm(mag_value))*mag_value
+#
+# power_diff_len=np.log10(norm(mag_value)) - np.log10(norm(dip_len_value))
+# if(power_diff_len >= 1):
+    # dip_len_scaling=(1/power_diff_len)*(norm(mag_value)/norm(dip_len_value))
+# if(power_diff_len < 1 and power_diff_len > -1):
+    # dip_len_scaling=(norm(mag_value)/norm(dip_len_value))
+# if(power_diff_len <= -1):
+    # dip_len_scaling=np.abs((power_diff_len))*(norm(mag_value)/norm(dip_len_value))
+#
+# power_diff_vel=np.log10(norm(mag_value)) - np.log10(norm(dip_vel_value))
+# if(power_diff_vel >= 1):
+    # dip_vel_scaling=(1/power_diff_vel)*(norm(mag_value)/norm(dip_vel_value))
+# if(power_diff_vel < 1 and power_diff_vel > -1):
+    # dip_vel_scaling=(norm(mag_value)/norm(dip_vel_value))
+# if(power_diff_vel <= -1):
+    # dip_vel_scaling=np.abs((power_diff_vel))*(norm(mag_value)/norm(dip_vel_value))
+#
+mag_value=mag_scaling*mag_value
 dip_len_value= dip_len_scaling*dip_len_value
 dip_vel_value= dip_vel_scaling*dip_vel_value
 
