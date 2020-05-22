@@ -46,7 +46,7 @@ data=pipeline.compute()
 
 #render image
 vp = Viewport()
-vp.type = Viewport.Type.Ortho
+vp.type = Viewport.Type.Perspective
 vp.camera_up=(1,0,0)
 vp.camera_dir = (camera_dir_x, camera_dir_y, camera_dir_z)
 vp.zoom_all() #note that this resets camera_pos but not camera_dir
