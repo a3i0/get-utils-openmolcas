@@ -30,4 +30,4 @@ grep -i 'magnetic moment' tmoments.dat | cut -d ':' -f 2 | awk '{print $1 " " $2
 
 python3 $SCRIPTS_DIR/getproperty-images.py $geom_file $renderer $camera_dir_x $camera_dir_y $camera_dir_z
 
-rm dip_len_value.raw dip_vel_value.raw mag_value.raw
+#rm dip_len_value.raw dip_vel_value.raw mag_value.raw
