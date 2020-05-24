@@ -21,3 +21,5 @@ sed "$data_init,$ !d" $inputcube2 > ${inputcube2}.raw
 paste ${inputcube1}.raw ${inputcube2}.raw | awk '{for (i=1; i<(NF/2); i++) { printf "%s ", $i*$(NF/2+i)}; printf "%s\n", $(NF/2)*$NF }' > ${outputcube}.raw
 sed "$data_init,$ d" $inputcube1 > $outputcube
 cat ${outputcube}.raw >> $outputcube
+
+rm ${inputcube1}.raw ${inputcube2}.raw ${outputcube}.raw
