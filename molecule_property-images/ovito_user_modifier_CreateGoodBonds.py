@@ -12,7 +12,7 @@ Bond1 = BondType(
 Bond2 = BondType(
     id=1,
     name='double',
-    color=(0.3,0.3,0.4)
+    color=(0.0,0.0,127.0/256)
 )
 
 def CreateCHbonds(): #returns a modifier
