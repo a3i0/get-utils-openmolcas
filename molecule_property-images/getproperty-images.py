@@ -3,7 +3,7 @@
 #Requirements: Python module ovito and ovito pro installed on system.
 #              OpenGL rendered requires graphics card, so may not work on remote servers.
 #              ovito_user_modifier_VisualiseMoments.py and ovito_user_modifier_CreateGoodBonds.py
-#Syntax: python3 getproperty-images.py xyz_file.xyz <rendering method>
+#Syntax: python3 getproperty-images.py xyz_file.xyz <rendering method> camera_x camera_y camera_z
 
 from ovito.io import import_file
 from ovito.vis import Viewport, OpenGLRenderer, OSPRayRenderer
