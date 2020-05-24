@@ -62,4 +62,4 @@ if (renderer=="opengl"):
     vp.render_image(filename=png_file,size=(1024,768), alpha=True, renderer=OpenGLRenderer())
 
 if(renderer=="ospray"):
-    vp.render_image(filename=png_file,size=(1024,768), alpha=False, renderer=osp)
+    vp.render_image(filename=png_file,size=(1024,768), alpha=True, renderer=osp)
