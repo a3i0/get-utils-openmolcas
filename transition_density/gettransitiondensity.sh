@@ -10,7 +10,7 @@ SCRIPTS_DIR=$(dirname $0)
 
 inputcube1=$1
 inputcube2=$2
-outputcube="outputcube.cube"
+outputcube="transition_density.cube"
 
 natoms=$(sed '3 !d' n.cube | awk '{print $1}')
 data_init=$(($natoms+3+1+2+1))
