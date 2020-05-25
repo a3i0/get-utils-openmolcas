@@ -4,7 +4,9 @@ import os
 import sys
 import numpy as np
 
-sys.path.append('./../molecule_property-images/') #To import ovito_user_modifier_CreateGoodBonds.py
+#print(str(os.path.dirname(os.path.abspath(__file__))) + "/../molecule_property-images/")
+
+sys.path.append(str(os.path.dirname(os.path.abspath(__file__))) + "/../molecule_property-images/") #To import ovito_user_modifier_CreateGoodBonds.py
 
 from ovito.io import import_file
 from ovito.vis import Viewport, OpenGLRenderer, OSPRayRenderer
