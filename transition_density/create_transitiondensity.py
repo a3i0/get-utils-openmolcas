@@ -23,6 +23,7 @@ renderer=sys.argv[2]
 camera_dir_x=float(sys.argv[3])
 camera_dir_y=float(sys.argv[4])
 camera_dir_z=float(sys.argv[5])
+isovalue=float(sys.argv[6])
 
 #modifier for removing visual element of simulation cell
 def remove_cell(frame,data):
@@ -34,13 +35,13 @@ pipeline=import_file(cube_file)
 PositiveIsosurfaceModifier=CreateIsosurfaceModifier(
     operate_on='voxels:imported', #default name of imported voxel grids
     property='Property', #default name of scalar voxel data stored in cube files. Source: Ovito GUI when using CreateIsosurfaceModifier on a loaded cube file
-    isolevel=0.003
+    isolevel=isovalue
 )
 
 NegativeIsosurfaceModifier=CreateIsosurfaceModifier(
     operate_on='voxels:imported',
     property='Property',
-    isolevel=-0.003
+    isolevel=-1*isovalue
 )
 #Visual properties of the isosurface
 PositiveIsosurfaceModifier.vis.surface_color=(20.0/256 , 118.0/256 , 223.0/256)
